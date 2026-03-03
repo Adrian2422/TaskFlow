@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="TaskFlow.AppHost/TaskFlow.AppHost.csproj" />
+  <Project Path="TaskFlow.Server/TaskFlow.Server.csproj" />
+  <Project Path="TaskFlow.Web/TaskFlow.Web.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+</Solution>
