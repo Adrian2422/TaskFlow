@@ -4,7 +4,7 @@ var server = builder.AddProject<Projects.TaskFlow_Server>("server")
     .WithHttpHealthCheck("/health")
     .WithExternalHttpEndpoints();
 
-var web = builder.AddViteApp("web", "../TaskFlow.Web")
+var web = builder.AddViteApp("web", "../Services/TaskFlow.Web")
     .WithRunScript("start")
     .WithReference(server)
     .WaitFor(server);
