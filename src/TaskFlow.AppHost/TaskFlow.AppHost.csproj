@@ -9,7 +9,8 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Services\TaskFlow.Server\TaskFlow.Server.csproj" />
+		<ProjectReference Include="..\TaskFlow.Api\TaskFlow.Api.csproj" />
+		<ProjectReference Include="..\TaskFlow.Web\TaskFlow.Web.esproj" />
 	</ItemGroup>
 
 	<ItemGroup>

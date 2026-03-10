@@ -1,14 +1,24 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var server = builder.AddProject<Projects.TaskFlow_Server>("server")
+var sqlPassword = builder.AddParameter("sql-password", secret: true);
+
+var db = builder
+    .AddSqlServer("db", password: sqlPassword)
+    .WithDataVolume("taskflow-data")
+    .WithLifetime(ContainerLifetime.Session)
+    .AddDatabase("taskflow-db");
+
+var api = builder.AddProject<Projects.TaskFlow_Api>("api")
     .WithHttpHealthCheck("/health")
-    .WithExternalHttpEndpoints();
+    .WithReference(db)
+    .WithExternalHttpEndpoints()
+    .WaitFor(db);
 
-var web = builder.AddViteApp("web", "../Services/TaskFlow.Web")
+var web = builder.AddViteApp("web", "../TaskFlow.Web")
     .WithRunScript("start")
-    .WithReference(server)
-    .WaitFor(server);
+    .WithReference(api)
+    .WaitFor(api);
 
-server.PublishWithContainerFiles(web, "wwwroot");
+api.PublishWithContainerFiles(web, "wwwroot");
 
 builder.Build().Run();
