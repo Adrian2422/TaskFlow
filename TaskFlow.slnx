@@ -1,25 +1,19 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="src/TaskFlow.Api/TaskFlow.Api.csproj" />
     <Project Path="src/TaskFlow.AppHost/TaskFlow.AppHost.csproj" />
+    <Project Path="src/TaskFlow.Application/TaskFlow.Application.csproj" />
+    <Project Path="src/TaskFlow.Domain/TaskFlow.Domain.csproj" />
+    <Project Path="src/TaskFlow.Infrastructure/TaskFlow.Infrastructure.csproj" />
     <Project Path="src/TaskFlow.ServiceDefaults/TaskFlow.ServiceDefaults.csproj" />
-  </Folder>
-  <Folder Name="/src/Core/">
-    <Project Path="src/Core/TaskFlow.Application/TaskFlow.Application.csproj" />
-    <Project Path="src/Core/TaskFlow.Domain/TaskFlow.Domain.csproj" />
-  </Folder>
-  <Folder Name="/src/Infrastructure/">
-    <Project Path="src/Infrastructure/TaskFlow.Infrastructure/TaskFlow.Infrastructure.csproj" />
-  </Folder>
-  <Folder Name="/src/Services/">
-    <Project Path="src/Services/TaskFlow.Server/TaskFlow.Server.csproj" />
-    <Project Path="src/Services/TaskFlow.Web/TaskFlow.Web.esproj">
+    <Project Path="src/TaskFlow.Web/TaskFlow.Web.esproj">
+      <BuildType Project="Debug" />
       <Build />
-      <Deploy />
     </Project>
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/TaskFlow.Api.IntegrationTests/TaskFlow.Api.IntegrationTests.csproj" />
     <Project Path="tests/TaskFlow.Application.Tests/TaskFlow.Application.Tests.csproj" />
     <Project Path="tests/TaskFlow.Domain.Tests/TaskFlow.Domain.Tests.csproj" />
-    <Project Path="tests/TaskFlow.Server.IntegrationTests/TaskFlow.Server.IntegrationTests.csproj" />
   </Folder>
 </Solution>
