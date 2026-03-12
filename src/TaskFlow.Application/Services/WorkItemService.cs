@@ -28,7 +28,12 @@ public class WorkItemService : IWorkItemService
 
     public async Task<WorkItemDto> CreateAsync(CreateWorkItemDto dto)
     {
-        var entity = WorkItem.Create(dto.Title, dto.Description);
+        var entity = WorkItem.Create(dto.Title, dto.Description, dto.ColumnId);
+
+        var maxOrder = await _repository.GetMaxOrderInColumnAsync(dto.ColumnId);
+        entity.Order = maxOrder.HasValue ? maxOrder.Value + 1000 : 1000;
+
+        entity.UpdatedAt = DateTime.UtcNow;
 
         await _repository.CreateAsync(entity);
         await _repository.SaveChangesAsync();
@@ -47,9 +52,6 @@ public class WorkItemService : IWorkItemService
 
         if (dto.Title != null) entity.Title = dto.Title;
         if (dto.Description != null) entity.Description = dto.Description;
-        if (dto.Status.HasValue) entity.Status = dto.Status.Value;
-
-        entity.UpdatedAt = DateTime.UtcNow;
 
         await _repository.UpdateAsync(entity);
         await _repository.SaveChangesAsync();
@@ -72,13 +74,35 @@ public class WorkItemService : IWorkItemService
         return true;
     }
 
+    public async Task Move(Guid id, MoveWorkItemDto dto)
+    {
+        var entity = await _repository.GetByIdAsync(id);
+        if (entity == null)
+        {
+            return;
+        }
+
+        double newOrder;
+        if (dto.PrevPosition.HasValue && dto.NextPosition.HasValue)
+            newOrder = (dto.PrevPosition.Value + dto.NextPosition.Value) / 2.0;
+        else if (dto.PrevPosition.HasValue)
+            newOrder = dto.PrevPosition.Value + 1000;
+        else if (dto.NextPosition.HasValue)
+            newOrder = dto.NextPosition.Value / 2.0;
+        else
+            newOrder = 1000;
+
+        entity.ColumnId = dto.ColumnId;
+        entity.Order = newOrder;
+
+        await _repository.UpdateAsync(entity);
+        await _repository.SaveChangesAsync();
+    }
+
     private static WorkItemDto ToDto(WorkItem x) => new()
     {
         Id = x.Id,
         Title = x.Title,
-        Description = x.Description,
-        Status = x.Status,
-        CreatedAt = x.CreatedAt,
-        UpdatedAt = x.UpdatedAt
+        Description = x.Description
     };
 }

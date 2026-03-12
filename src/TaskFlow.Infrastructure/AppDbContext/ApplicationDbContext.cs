@@ -5,7 +5,10 @@ namespace TaskFlow.Infrastructure.AppDbContext;
 
 public class ApplicationDbContext : DbContext
 {
-    public DbSet<WorkItem> WorkItems { get; set; }
+    public DbSet<Board> Boards => Set<Board>();
+    public DbSet<BoardColumn> Columns => Set<BoardColumn>();
+    public DbSet<WorkItem> WorkItems => Set<WorkItem>();
+
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {

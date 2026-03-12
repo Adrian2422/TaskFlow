@@ -9,7 +9,8 @@ public static class InfrastructureServiceCollectionExtensions
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
     {
         services.AddScoped<IWorkItemRepository, WorkItemRepository>();
-        
+        services.AddScoped<DatabaseSeeder>();
+
         return services;
     }
 }

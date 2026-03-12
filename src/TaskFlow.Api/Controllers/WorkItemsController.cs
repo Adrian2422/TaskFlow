@@ -21,7 +21,7 @@ public class WorkItemsController : ControllerBase
         var workItems = await _service.GetAllAsync();
         return Ok(workItems);
     }
-    
+
     [HttpGet("{id}")]
     public async Task<ActionResult<WorkItemDto>> GetById(Guid id)
     {
@@ -32,7 +32,7 @@ public class WorkItemsController : ControllerBase
 
         return Ok(item);
     }
-    
+
     [HttpPost]
     public async Task<ActionResult<WorkItemDto>> Create(CreateWorkItemDto dto)
     {
@@ -62,6 +62,18 @@ public class WorkItemsController : ControllerBase
 
         if (!deleted)
             return NotFound();
+
+        return NoContent();
+    }
+
+    [HttpPost("{id}/move")]
+    public async Task<ActionResult> Move(Guid id, [FromBody] MoveWorkItemDto dto)
+    {
+        var item = await _service.GetByIdAsync(id);
+        if (item == null)
+            return NotFound();
+
+        await _service.Move(id, dto);
 
         return NoContent();
     }

@@ -6,6 +6,7 @@ public interface IWorkItemRepository
 {
     Task<List<WorkItem>> GetAllAsync();
     Task<WorkItem?> GetByIdAsync(Guid id);
+    Task<double?> GetMaxOrderInColumnAsync(Guid columnId);
     Task CreateAsync(WorkItem item);
     Task UpdateAsync(WorkItem item);
     Task DeleteAsync(WorkItem item);

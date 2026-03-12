@@ -24,6 +24,13 @@ public class WorkItemRepository : IWorkItemRepository
         return await _context.WorkItems.FindAsync(id);
     }
 
+    public async Task<double?> GetMaxOrderInColumnAsync(Guid columnId)
+    {
+        return await _context.WorkItems
+            .Where(w => w.ColumnId == columnId)
+            .MaxAsync(w => (double?)w.Order);
+    }
+
     public async Task CreateAsync(WorkItem item)
     {
         await _context.WorkItems.AddAsync(item);
