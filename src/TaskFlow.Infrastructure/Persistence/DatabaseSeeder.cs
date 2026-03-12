@@ -16,6 +16,8 @@ public class DatabaseSeeder
 
     public async Task SeedAsync()
     {
+        string[] columnNames = ["New", "In progress", "Done"];
+
         if (await _context.Boards.AnyAsync())
         {
             return;
@@ -30,30 +32,23 @@ public class DatabaseSeeder
             .RuleFor(w => w.Description, f => f.Lorem.Paragraph())
             .RuleFor(w => w.Order, f => f.Random.Double(0, 100));
 
-        var board = boardFaker.Generate();
+        var boards = boardFaker.Generate(3);
 
-        var columns = new List<BoardColumn>
+        foreach (var board in boards)
         {
-            new() { Name = "New", Order = 0, IsProtected = true },
-            new() { Name = "In progress", Order = 1000, IsProtected = false },
-            new() { Name = "Done", Order = 2000, IsProtected = false }
-        };
-
-        var totalWorkItems = new Random().Next(50, 101);
-        var workItems = workItemFaker.Generate(totalWorkItems);
-
-        foreach (var item in workItems)
-        {
-            var randomColumn = columns[new Random().Next(columns.Count)];
-            randomColumn.WorkItems.Add(item);
+            var columns = columnNames.Select((name, index) => new BoardColumn
+            {
+                Name = name,
+                Order = index,
+                WorkItems = workItemFaker.Generate(new Random().Next(2, 5))
+            });
+            foreach (var column in columns)
+            {
+                board.Columns.Add(column);
+            }
         }
 
-        foreach (var column in columns)
-        {
-            board.Columns.Add(column);
-        }
-
-        await _context.Boards.AddAsync(board);
+        await _context.Boards.AddRangeAsync(boards);
         await _context.SaveChangesAsync();
     }
 }

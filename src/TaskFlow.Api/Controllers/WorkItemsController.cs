@@ -1,6 +1,5 @@
 ﻿using TaskFlow.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using TaskFlow.Application.Common;
 using TaskFlow.Application.DTOs;
 
 namespace TaskFlow.Api.Controllers;
@@ -15,16 +14,9 @@ public class WorkItemsController : ControllerBase
     {
         _service = service;
     }
-    
+
     [HttpGet]
-    public async Task<ActionResult<PagedResult<WorkItemDto>>> GetWorkItems([FromQuery] PaginationQuery query)
-    {
-        var result = await _service.GetPagedAsync(query);
-        return Ok(result);
-    }
-    
-    [HttpGet("all")]
-    public async Task<ActionResult<List<WorkItemDto>>> GetAllWorkItems()
+    public async Task<ActionResult<List<WorkItemDto>>> GetWorkItems()
     {
         var workItems = await _service.GetAllAsync();
         return Ok(workItems);
@@ -81,7 +73,7 @@ public class WorkItemsController : ControllerBase
         if (item == null)
             return NotFound();
 
-        await _service.MoveAsync(id, dto);
+        await _service.Move(id, dto);
 
         return NoContent();
     }

@@ -1,5 +1,4 @@
-﻿using TaskFlow.Application.Common;
-using TaskFlow.Application.DTOs;
+﻿using TaskFlow.Application.DTOs;
 using TaskFlow.Application.Interfaces;
 using TaskFlow.Domain.Entities;
 using TaskFlow.Domain.Interfaces;
@@ -20,19 +19,6 @@ public class WorkItemService : IWorkItemService
         var entities = await _repository.GetAllAsync();
         return entities.Select(ToDto).ToList();
     }
-    
-    public async Task<PagedResult<WorkItemDto>> GetPagedAsync(PaginationQuery query)
-    {
-        var (items, totalCount) = await _repository.GetPagedAsync(query.PageNumber, query.PageSize);
-
-        return new PagedResult<WorkItemDto>
-        {
-            Items = items.Select(ToDto).ToList(),
-            TotalCount = totalCount,
-            PageNumber = query.PageNumber,
-            PageSize = query.PageSize
-        };
-    }
 
     public async Task<WorkItemDto?> GetByIdAsync(Guid id)
     {
@@ -42,10 +28,10 @@ public class WorkItemService : IWorkItemService
 
     public async Task<WorkItemDto> CreateAsync(CreateWorkItemDto dto)
     {
+        var entity = WorkItem.Create(dto.Title, dto.Description, dto.ColumnId);
+
         var maxOrder = await _repository.GetMaxOrderInColumnAsync(dto.ColumnId);
-        var order = maxOrder.HasValue ? maxOrder.Value + 1000 : 1000;
-        
-        var entity = WorkItem.Create(dto.Title, dto.Description, dto.ColumnId, order);
+        entity.Order = maxOrder.HasValue ? maxOrder.Value + 1000 : 1000;
 
         entity.UpdatedAt = DateTime.UtcNow;
 
@@ -88,7 +74,7 @@ public class WorkItemService : IWorkItemService
         return true;
     }
 
-    public async Task MoveAsync(Guid id, MoveWorkItemDto dto)
+    public async Task Move(Guid id, MoveWorkItemDto dto)
     {
         var entity = await _repository.GetByIdAsync(id);
         if (entity == null)
@@ -117,7 +103,6 @@ public class WorkItemService : IWorkItemService
     {
         Id = x.Id,
         Title = x.Title,
-        Description = x.Description,
-        Order = x.Order
+        Description = x.Description
     };
 }
