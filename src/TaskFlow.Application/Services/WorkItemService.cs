@@ -28,10 +28,10 @@ public class WorkItemService : IWorkItemService
 
     public async Task<WorkItemDto> CreateAsync(CreateWorkItemDto dto)
     {
-        var entity = WorkItem.Create(dto.Title, dto.Description, dto.ColumnId);
-
         var maxOrder = await _repository.GetMaxOrderInColumnAsync(dto.ColumnId);
-        entity.Order = maxOrder.HasValue ? maxOrder.Value + 1000 : 1000;
+        var order = maxOrder.HasValue ? maxOrder.Value + 1000 : 1000;
+        
+        var entity = WorkItem.Create(dto.Title, dto.Description, dto.ColumnId, order);
 
         entity.UpdatedAt = DateTime.UtcNow;
 
@@ -103,6 +103,7 @@ public class WorkItemService : IWorkItemService
     {
         Id = x.Id,
         Title = x.Title,
-        Description = x.Description
+        Description = x.Description,
+        Order = x.Order
     };
 }
