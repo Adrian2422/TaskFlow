@@ -88,7 +88,7 @@ public class WorkItemService : IWorkItemService
         return true;
     }
 
-    public async Task Move(Guid id, MoveWorkItemDto dto)
+    public async Task MoveAsync(Guid id, MoveWorkItemDto dto)
     {
         var entity = await _repository.GetByIdAsync(id);
         if (entity == null)

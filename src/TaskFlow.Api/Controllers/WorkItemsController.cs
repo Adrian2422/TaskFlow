@@ -81,7 +81,7 @@ public class WorkItemsController : ControllerBase
         if (item == null)
             return NotFound();
 
-        await _service.Move(id, dto);
+        await _service.MoveAsync(id, dto);
 
         return NoContent();
     }

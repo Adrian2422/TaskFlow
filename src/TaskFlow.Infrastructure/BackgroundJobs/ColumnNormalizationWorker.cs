@@ -4,11 +4,11 @@ using TaskFlow.Application.Interfaces;
 
 namespace TaskFlow.Infrastructure.BackgroundJobs;
 
-public class OrderNormalizationWorker: BackgroundService
+public class ColumnNormalizationWorker : BackgroundService
 {
     private readonly IServiceScopeFactory _scopeFactory;
 
-    public OrderNormalizationWorker(IServiceScopeFactory scopeFactory)
+    public ColumnNormalizationWorker(IServiceScopeFactory scopeFactory)
     {
         _scopeFactory = scopeFactory;
     }
