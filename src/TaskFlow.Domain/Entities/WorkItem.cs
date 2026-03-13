@@ -10,13 +10,14 @@ public class WorkItem : BaseEntity
 
     public double Order { get; set; }
 
-    public static WorkItem Create(string title, string? description, Guid columnId)
+    public static WorkItem Create(string title, string? description, Guid columnId, double order)
     {
         return new WorkItem
         {
             Title = title,
             Description = description,
-            ColumnId = columnId
+            ColumnId = columnId,
+            Order = order
         };
     }
 }
