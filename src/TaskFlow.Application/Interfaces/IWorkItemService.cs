@@ -12,5 +12,5 @@ public interface IWorkItemService
     Task<WorkItemDto> CreateAsync(CreateWorkItemDto dto);
     Task<WorkItemDto?> UpdateAsync(Guid id, UpdateWorkItemDto dto);
     Task<bool> DeleteAsync(Guid id);
-    Task Move(Guid id, MoveWorkItemDto dto);
+    Task MoveAsync(Guid id, MoveWorkItemDto dto);
 }

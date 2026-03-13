@@ -12,10 +12,13 @@ public static class InfrastructureServiceCollectionExtensions
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
     {
         services.AddScoped<IWorkItemRepository, WorkItemRepository>();
+        services.AddScoped<IBoardRepository, BoardRepository>();
+        services.AddScoped<IBoardColumnRepository, BoardColumnRepository>();
         services.AddScoped<DatabaseSeeder>();
 
         services.AddScoped<IOrderNormalizationService, OrderNormalizationService>();
-        services.AddHostedService<OrderNormalizationWorker>();
+        services.AddHostedService<WorkItemNormalizationWorker>();
+        services.AddHostedService<ColumnNormalizationWorker>();
         
         return services;
     }
