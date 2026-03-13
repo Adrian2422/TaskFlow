@@ -1,7 +1,14 @@
-﻿using TaskFlow.Application.Interfaces;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using MediatR;
 using TaskFlow.Application.Common;
 using TaskFlow.Application.DTOs;
+using TaskFlow.Application.Queries.WorkItems.GetAllWorkItems;
+using TaskFlow.Application.Queries.WorkItems.GetPagedWorkItems;
+using TaskFlow.Application.Queries.WorkItems.GetWorkItemById;
+using TaskFlow.Application.Commands.WorkItems.CreateWorkItem;
+using TaskFlow.Application.Commands.WorkItems.UpdateWorkItem;
+using TaskFlow.Application.Commands.WorkItems.DeleteWorkItem;
+using TaskFlow.Application.Commands.WorkItems.MoveWorkItem;
 
 namespace TaskFlow.Api.Controllers;
 
@@ -9,31 +16,31 @@ namespace TaskFlow.Api.Controllers;
 [Route("api/work-items")]
 public class WorkItemsController : ControllerBase
 {
-    private readonly IWorkItemService _service;
+    private readonly IMediator _mediator;
 
-    public WorkItemsController(IWorkItemService service)
+    public WorkItemsController(IMediator mediator)
     {
-        _service = service;
+        _mediator = mediator;
     }
     
     [HttpGet]
     public async Task<ActionResult<PagedResult<WorkItemDto>>> GetWorkItems([FromQuery] PaginationQuery query)
     {
-        var result = await _service.GetPagedAsync(query);
+        var result = await _mediator.Send(new GetPagedWorkItemsQuery(query.PageNumber, query.PageSize));
         return Ok(result);
     }
     
     [HttpGet("all")]
     public async Task<ActionResult<List<WorkItemDto>>> GetAllWorkItems()
     {
-        var workItems = await _service.GetAllAsync();
+        var workItems = await _mediator.Send(new GetAllWorkItemsQuery());
         return Ok(workItems);
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<WorkItemDto>> GetById(Guid id)
     {
-        var item = await _service.GetByIdAsync(id);
+        var item = await _mediator.Send(new GetWorkItemByIdQuery(id));
 
         if (item == null)
             return NotFound();
@@ -44,7 +51,7 @@ public class WorkItemsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<WorkItemDto>> Create(CreateWorkItemDto dto)
     {
-        var result = await _service.CreateAsync(dto);
+        var result = await _mediator.Send(new CreateWorkItemCommand(dto.Title, dto.Description, dto.ColumnId));
 
         return CreatedAtAction(
             nameof(GetById),
@@ -55,7 +62,7 @@ public class WorkItemsController : ControllerBase
     [HttpPut("{id}")]
     public async Task<ActionResult<WorkItemDto>> Update(Guid id, UpdateWorkItemDto dto)
     {
-        var result = await _service.UpdateAsync(id, dto);
+        var result = await _mediator.Send(new UpdateWorkItemCommand(id, dto.Title, dto.Description));
 
         if (result == null)
             return NotFound();
@@ -66,7 +73,7 @@ public class WorkItemsController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(Guid id)
     {
-        var deleted = await _service.DeleteAsync(id);
+        var deleted = await _mediator.Send(new DeleteWorkItemCommand(id));
 
         if (!deleted)
             return NotFound();
@@ -77,11 +84,11 @@ public class WorkItemsController : ControllerBase
     [HttpPost("{id}/move")]
     public async Task<ActionResult> Move(Guid id, [FromBody] MoveWorkItemDto dto)
     {
-        var item = await _service.GetByIdAsync(id);
+        var item = await _mediator.Send(new GetWorkItemByIdQuery(id));
         if (item == null)
             return NotFound();
 
-        await _service.MoveAsync(id, dto);
+        await _mediator.Send(new MoveWorkItemCommand(id, dto.ColumnId, dto.PrevPosition, dto.NextPosition));
 
         return NoContent();
     }
