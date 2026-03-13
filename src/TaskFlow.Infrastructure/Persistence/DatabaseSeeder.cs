@@ -40,7 +40,7 @@ public class DatabaseSeeder
             {
                 Name = name,
                 Order = index,
-                WorkItems = workItemFaker.Generate(new Random().Next(2, 5))
+                WorkItems = workItemFaker.Generate(new Random().Next(5, 10))
             });
             foreach (var column in columns)
             {
