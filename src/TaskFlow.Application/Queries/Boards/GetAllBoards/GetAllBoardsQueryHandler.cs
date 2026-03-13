@@ -1,10 +1,11 @@
 ﻿using MediatR;
+using TaskFlow.Application.Common;
 using TaskFlow.Application.DTOs;
 using TaskFlow.Domain.Interfaces;
 
 namespace TaskFlow.Application.Queries.Boards.GetAllBoards;
 
-public class GetAllBoardsQueryHandler : IRequestHandler<GetAllBoardsQuery, List<BoardDto>>
+public class GetAllBoardsQueryHandler : IRequestHandler<GetAllBoardsQuery, Result<List<BoardDto>>>
 {
     private readonly IBoardRepository _boardRepository;
 
@@ -13,14 +14,19 @@ public class GetAllBoardsQueryHandler : IRequestHandler<GetAllBoardsQuery, List<
         _boardRepository = boardRepository;
     }
 
-    public async Task<List<BoardDto>> Handle(GetAllBoardsQuery request, CancellationToken cancellationToken)
+    public async Task<Result<List<BoardDto>>> Handle(GetAllBoardsQuery request, CancellationToken cancellationToken)
     {
         var boards = await _boardRepository.GetAllAsync();
-        return boards.Select(b => new BoardDto
-        {
-            Id = b.Id,
-            Name = b.Name,
-            Description = b.Description
-        }).ToList();
+
+        var result = boards
+            .Where(b => !b.IsArchived)
+            .Select(b => new BoardDto
+            {
+                Id = b.Id,
+                Name = b.Name,
+                Description = b.Description
+            }).ToList();
+
+        return Result.Success(result);
     }
 }

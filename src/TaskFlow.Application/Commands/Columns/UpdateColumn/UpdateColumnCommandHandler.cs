@@ -1,10 +1,12 @@
 ﻿using MediatR;
+using TaskFlow.Application.Common;
 using TaskFlow.Application.DTOs;
+using TaskFlow.Domain.Errors;
 using TaskFlow.Domain.Interfaces;
 
 namespace TaskFlow.Application.Commands.Columns.UpdateColumn;
 
-public class UpdateColumnCommandHandler : IRequestHandler<UpdateColumnCommand, ColumnDto?>
+public class UpdateColumnCommandHandler : IRequestHandler<UpdateColumnCommand, Result<ColumnDto>>
 {
     private readonly IBoardColumnRepository _columnRepository;
 
@@ -13,15 +15,16 @@ public class UpdateColumnCommandHandler : IRequestHandler<UpdateColumnCommand, C
         _columnRepository = columnRepository;
     }
 
-    public async Task<ColumnDto?> Handle(UpdateColumnCommand request, CancellationToken cancellationToken)
+    public async Task<Result<ColumnDto>> Handle(UpdateColumnCommand request, CancellationToken cancellationToken)
     {
         var column = await _columnRepository.GetByIdAsync(request.ColumnId);
         if (column == null || column.BoardId != request.BoardId)
-            return null;
+        {
+            return Result.Failure<ColumnDto>(ColumnErrors.NotFound(request.ColumnId, request.BoardId));
+        }
 
         if (request.Name != null) column.Name = request.Name;
         if (request.Order.HasValue) column.Order = request.Order.Value;
-        column.UpdatedAt = DateTime.UtcNow;
 
         await _columnRepository.UpdateAsync(column);
         await _columnRepository.SaveChangesAsync();

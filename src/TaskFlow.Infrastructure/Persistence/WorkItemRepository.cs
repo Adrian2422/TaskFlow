@@ -18,7 +18,7 @@ public class WorkItemRepository : IWorkItemRepository
     {
         return await _context.WorkItems.ToListAsync();
     }
-    
+
     public async Task<(List<WorkItem> Items, int TotalCount)> GetPagedAsync(int pageNumber, int pageSize)
     {
         var query = _context.WorkItems.OrderBy(w => w.Order);
@@ -41,6 +41,13 @@ public class WorkItemRepository : IWorkItemRepository
     {
         return await _context.WorkItems
             .Where(w => w.ColumnId == columnId)
+            .MaxAsync(w => (double?)w.Order);
+    }
+
+    public async Task<double?> GetMaxOrderInBacklogAsync(Guid boardId)
+    {
+        return await _context.WorkItems
+            .Where(w => w.BoardId == boardId && w.ColumnId == null)
             .MaxAsync(w => (double?)w.Order);
     }
 

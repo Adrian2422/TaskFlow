@@ -30,6 +30,7 @@ if (builder.Environment.IsDevelopment())
     builder.Services.AddSwaggerGen(options =>
     {
         options.SwaggerDoc("v1", new OpenApiInfo { Title = "TaskFlow API", Version = "v1" });
+        options.EnableAnnotations();
     });
 }
 

@@ -1,9 +1,11 @@
 ﻿using MediatR;
+using TaskFlow.Application.Common;
+using TaskFlow.Domain.Errors;
 using TaskFlow.Domain.Interfaces;
 
 namespace TaskFlow.Application.Commands.Columns.MoveColumn;
 
-public class MoveColumnCommandHandler : IRequestHandler<MoveColumnCommand>
+public class MoveColumnCommandHandler : IRequestHandler<MoveColumnCommand, Result>
 {
     private readonly IBoardColumnRepository _columnRepository;
 
@@ -12,10 +14,13 @@ public class MoveColumnCommandHandler : IRequestHandler<MoveColumnCommand>
         _columnRepository = columnRepository;
     }
 
-    public async Task Handle(MoveColumnCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(MoveColumnCommand request, CancellationToken cancellationToken)
     {
         var column = await _columnRepository.GetByIdAsync(request.ColumnId);
-        if (column == null || column.BoardId != request.BoardId) return;
+        if (column == null || column.BoardId != request.BoardId)
+        {
+            return Result.Failure(ColumnErrors.NotFound(request.ColumnId, request.BoardId));
+        }
 
         double newOrder;
         if (request.PrevPosition.HasValue && request.NextPosition.HasValue)
@@ -30,5 +35,7 @@ public class MoveColumnCommandHandler : IRequestHandler<MoveColumnCommand>
         column.Order = newOrder;
         await _columnRepository.UpdateAsync(column);
         await _columnRepository.SaveChangesAsync();
+
+        return Result.Success();
     }
 }

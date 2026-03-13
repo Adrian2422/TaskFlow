@@ -1,9 +1,11 @@
 ﻿using MediatR;
+using TaskFlow.Application.Common;
+using TaskFlow.Domain.Errors;
 using TaskFlow.Domain.Interfaces;
 
 namespace TaskFlow.Application.Commands.Boards.DeleteBoard;
 
-public class DeleteBoardCommandHandler : IRequestHandler<DeleteBoardCommand, bool>
+public class DeleteBoardCommandHandler : IRequestHandler<DeleteBoardCommand, Result>
 {
     private readonly IBoardRepository _boardRepository;
 
@@ -12,14 +14,22 @@ public class DeleteBoardCommandHandler : IRequestHandler<DeleteBoardCommand, boo
         _boardRepository = boardRepository;
     }
 
-    public async Task<bool> Handle(DeleteBoardCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(DeleteBoardCommand request, CancellationToken cancellationToken)
     {
         var board = await _boardRepository.GetByIdAsync(request.Id);
         if (board == null)
-            return false;
+        {
+            return Result.Failure(BoardErrors.NotFound(request.Id));
+        }
+
+        if (!board.IsArchived)
+        {
+            return Result.Failure(BoardErrors.NotArchived);
+        }
 
         await _boardRepository.DeleteAsync(board);
         await _boardRepository.SaveChangesAsync();
-        return true;
+
+        return Result.Success();
     }
 }

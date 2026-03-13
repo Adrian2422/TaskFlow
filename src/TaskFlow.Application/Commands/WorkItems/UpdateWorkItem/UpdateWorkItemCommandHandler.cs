@@ -1,23 +1,25 @@
 ﻿using MediatR;
+using TaskFlow.Application.Common;
 using TaskFlow.Application.DTOs;
+using TaskFlow.Domain.Errors;
 using TaskFlow.Domain.Interfaces;
 
 namespace TaskFlow.Application.Commands.WorkItems.UpdateWorkItem;
 
-public class UpdateWorkItemCommandHandler : IRequestHandler<UpdateWorkItemCommand, WorkItemDto?>
+public class UpdateWorkItemCommandHandler : IRequestHandler<UpdateWorkItemCommand, Result<WorkItemDto>>
 {
     private readonly IWorkItemRepository _repository;
 
     public UpdateWorkItemCommandHandler(IWorkItemRepository repository)
         => _repository = repository;
 
-    public async Task<WorkItemDto?> Handle(UpdateWorkItemCommand request, CancellationToken ct)
+    public async Task<Result<WorkItemDto>> Handle(UpdateWorkItemCommand request, CancellationToken ct)
     {
         var entity = await _repository.GetByIdAsync(request.Id);
 
         if (entity == null)
         {
-            return null;
+            return Result.Failure<WorkItemDto>(WorkItemErrors.NotFound(request.Id));
         }
 
         if (request.Title != null) entity.Title = request.Title;

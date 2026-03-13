@@ -1,21 +1,23 @@
 ﻿using MediatR;
+using TaskFlow.Application.Common;
+using TaskFlow.Domain.Errors;
 using TaskFlow.Domain.Interfaces;
 
 namespace TaskFlow.Application.Commands.WorkItems.MoveWorkItem;
 
-public class MoveWorkItemCommandHandler : IRequestHandler<MoveWorkItemCommand>
+public class MoveWorkItemCommandHandler : IRequestHandler<MoveWorkItemCommand, Result>
 {
     private readonly IWorkItemRepository _repository;
 
     public MoveWorkItemCommandHandler(IWorkItemRepository repository)
         => _repository = repository;
 
-    public async Task Handle(MoveWorkItemCommand request, CancellationToken ct)
+    public async Task<Result> Handle(MoveWorkItemCommand request, CancellationToken ct)
     {
         var entity = await _repository.GetByIdAsync(request.Id);
         if (entity == null)
         {
-            return;
+            return Result.Failure(WorkItemErrors.NotFound(request.Id));
         }
 
         double newOrder;
@@ -33,5 +35,7 @@ public class MoveWorkItemCommandHandler : IRequestHandler<MoveWorkItemCommand>
 
         await _repository.UpdateAsync(entity);
         await _repository.SaveChangesAsync();
+
+        return Result.Success();
     }
 }

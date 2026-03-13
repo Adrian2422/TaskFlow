@@ -13,10 +13,10 @@ public class OrderNormalizationService : IOrderNormalizationService
         _context = context;
     }
 
-    private async Task<bool> WorkItemsNeedsNormalization(Guid columnId, double minGap)
+    private async Task<bool> WorkItemsNeedsNormalization(Guid? columnId, Guid boardId, double minGap)
     {
         var order = await _context.WorkItems
-            .Where(x => x.ColumnId == columnId)
+            .Where(x => x.ColumnId == columnId && x.BoardId == boardId)
             .OrderBy(x => x.Order)
             .Select(x => x.Order)
             .ToListAsync();
@@ -49,16 +49,16 @@ public class OrderNormalizationService : IOrderNormalizationService
 
     public async Task NormalizeWorkItemsIfNeeded(double minGap)
     {
-        var columnIds = await _context.WorkItems
-            .Select(x => x.ColumnId)
+        var groups = await _context.WorkItems
+            .Select(x => new { x.ColumnId, x.BoardId })
             .Distinct()
             .ToListAsync();
 
-        foreach (var columnId in columnIds)
+        foreach (var group in groups)
         {
-            if (await WorkItemsNeedsNormalization(columnId, minGap))
+            if (await WorkItemsNeedsNormalization(group.ColumnId, group.BoardId, minGap))
             {
-                await NormalizeWorkItems(columnId);
+                await NormalizeWorkItems(group.ColumnId, group.BoardId);
             }
         }
     }
@@ -79,10 +79,10 @@ public class OrderNormalizationService : IOrderNormalizationService
         }
     }
 
-    private async Task NormalizeWorkItems(Guid columnId)
+    private async Task NormalizeWorkItems(Guid? columnId, Guid boardId)
     {
         var items = await _context.WorkItems
-            .Where(x => x.ColumnId == columnId)
+            .Where(x => x.ColumnId == columnId && x.BoardId == boardId)
             .OrderBy(x => x.Order)
             .ToListAsync();
 

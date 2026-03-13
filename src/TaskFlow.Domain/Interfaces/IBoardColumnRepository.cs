@@ -5,6 +5,7 @@ namespace TaskFlow.Domain.Interfaces;
 public interface IBoardColumnRepository
 {
     Task<BoardColumn?> GetByIdAsync(Guid id);
+    Task<BoardColumn?> GetByIdWithWorkItemsAsync(Guid id);
     Task<List<BoardColumn>> GetByBoardIdAsync(Guid boardId);
     Task<double> GetMaxOrderInBoardAsync(Guid boardId);
     Task CreateAsync(BoardColumn column);

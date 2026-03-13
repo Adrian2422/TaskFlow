@@ -9,7 +9,7 @@ public static class ApplicationServiceCollectionExtensions
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
-        services.AddMediatR(cfg => 
+        services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssembly(typeof(AssemblyMarker).Assembly));
 
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
