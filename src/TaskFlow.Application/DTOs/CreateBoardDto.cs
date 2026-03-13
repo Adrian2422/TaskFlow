@@ -1,7 +1,7 @@
 ﻿namespace TaskFlow.Application.DTOs;
 
-public class UpdateWorkItemDto
+public class CreateBoardDto
 {
-    public string? Title { get; init; }
+    public required string Name { get; init; }
     public string? Description { get; init; }
 }

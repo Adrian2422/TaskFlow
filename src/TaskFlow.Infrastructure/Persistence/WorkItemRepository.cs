@@ -18,10 +18,30 @@ public class WorkItemRepository : IWorkItemRepository
     {
         return await _context.WorkItems.ToListAsync();
     }
+    
+    public async Task<(List<WorkItem> Items, int TotalCount)> GetPagedAsync(int pageNumber, int pageSize)
+    {
+        var query = _context.WorkItems.OrderBy(w => w.Order);
+
+        var totalCount = await query.CountAsync();
+        var items = await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return (items, totalCount);
+    }
 
     public async Task<WorkItem?> GetByIdAsync(Guid id)
     {
         return await _context.WorkItems.FindAsync(id);
+    }
+
+    public async Task<double?> GetMaxOrderInColumnAsync(Guid columnId)
+    {
+        return await _context.WorkItems
+            .Where(w => w.ColumnId == columnId)
+            .MaxAsync(w => (double?)w.Order);
     }
 
     public async Task CreateAsync(WorkItem item)

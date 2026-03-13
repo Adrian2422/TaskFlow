@@ -1,24 +1,23 @@
-﻿using TaskFlow.Domain.Enums;
+﻿namespace TaskFlow.Domain.Entities;
 
-namespace TaskFlow.Domain.Entities;
-
-public class WorkItem
+public class WorkItem : BaseEntity
 {
-    public Guid Id { get; private set; } = Guid.NewGuid();
     public string Title { get; set; } = string.Empty;
     public string? Description { get; set; }
-    public WorkItemStatus Status { get; set; } = WorkItemStatus.New;
-    public DateTime CreatedAt { get; private set; }
-    public DateTime? UpdatedAt { get; set; }
 
-    public static WorkItem Create(string title, string? description)
+    public Guid ColumnId { get; set; }
+    public BoardColumn Column { get; set; } = null!;
+
+    public double Order { get; set; }
+
+    public static WorkItem Create(string title, string? description, Guid columnId, double order)
     {
         return new WorkItem
         {
             Title = title,
             Description = description,
-            Status = WorkItemStatus.New,
-            CreatedAt = DateTime.UtcNow
+            ColumnId = columnId,
+            Order = order
         };
     }
 }

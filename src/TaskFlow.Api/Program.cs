@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
 using TaskFlow.Application.DependencyInjection;
 using TaskFlow.Infrastructure.AppDbContext;
+using TaskFlow.Infrastructure.Persistence;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 using TaskFlow.Infrastructure.DependencyInjection;
 
@@ -41,12 +42,15 @@ if (app.Environment.IsDevelopment())
     {
         var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         db.Database.Migrate();
+
+        var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
+        await seeder.SeedAsync();
     }
-    
+
     app.UseSwagger();
-    app.UseSwaggerUI(options => 
-    { 
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "TaskFlow API V1"); 
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "TaskFlow API V1");
     });
 }
 

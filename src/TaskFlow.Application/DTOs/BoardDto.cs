@@ -1,9 +1,8 @@
 ﻿namespace TaskFlow.Application.DTOs;
 
-public class WorkItemDto
+public class BoardDto
 {
     public Guid Id { get; set; }
-    public required string Title { get; set; }
+    public required string Name { get; set; }
     public string? Description { get; set; }
-    public double Order { get; set; }
 }

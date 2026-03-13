@@ -1,5 +1,6 @@
 ﻿using TaskFlow.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using TaskFlow.Application.Common;
 using TaskFlow.Application.DTOs;
 
 namespace TaskFlow.Api.Controllers;
@@ -14,14 +15,21 @@ public class WorkItemsController : ControllerBase
     {
         _service = service;
     }
-
+    
     [HttpGet]
-    public async Task<ActionResult<List<WorkItemDto>>> GetWorkItems()
+    public async Task<ActionResult<PagedResult<WorkItemDto>>> GetWorkItems([FromQuery] PaginationQuery query)
+    {
+        var result = await _service.GetPagedAsync(query);
+        return Ok(result);
+    }
+    
+    [HttpGet("all")]
+    public async Task<ActionResult<List<WorkItemDto>>> GetAllWorkItems()
     {
         var workItems = await _service.GetAllAsync();
         return Ok(workItems);
     }
-    
+
     [HttpGet("{id}")]
     public async Task<ActionResult<WorkItemDto>> GetById(Guid id)
     {
@@ -32,7 +40,7 @@ public class WorkItemsController : ControllerBase
 
         return Ok(item);
     }
-    
+
     [HttpPost]
     public async Task<ActionResult<WorkItemDto>> Create(CreateWorkItemDto dto)
     {
@@ -62,6 +70,18 @@ public class WorkItemsController : ControllerBase
 
         if (!deleted)
             return NotFound();
+
+        return NoContent();
+    }
+
+    [HttpPost("{id}/move")]
+    public async Task<ActionResult> Move(Guid id, [FromBody] MoveWorkItemDto dto)
+    {
+        var item = await _service.GetByIdAsync(id);
+        if (item == null)
+            return NotFound();
+
+        await _service.MoveAsync(id, dto);
 
         return NoContent();
     }

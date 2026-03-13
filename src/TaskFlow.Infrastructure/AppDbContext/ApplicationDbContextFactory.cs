@@ -16,8 +16,8 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
             .Build();
 
         var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-        
-        var connectionString = configuration.GetConnectionString("taskflow-db") 
+
+        var connectionString = configuration.GetConnectionString("taskflow-db")
                                ?? "Server=(localdb)\\mssqllocaldb;Database=TaskFlow;Trusted_Connection=True;";
 
         optionsBuilder.UseSqlServer(connectionString);

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DdlMappings">
+    <mapping uuid="201cca1d-5bb5-4a87-acb6-8721dabe791b" name="DDL Mapping">
+      <data-sources db="c06a69c1-8b8b-4346-909e-2f419ed0354f" ddl="e8a8b008-6254-46d1-9bb6-49b4fa600f52" />
+      <scope>
+        <node kind="database" qname="taskflow-db" />
+      </scope>
+    </mapping>
+  </component>
+</project>

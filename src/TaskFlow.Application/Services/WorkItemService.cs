@@ -1,4 +1,5 @@
-﻿using TaskFlow.Application.DTOs;
+﻿using TaskFlow.Application.Common;
+using TaskFlow.Application.DTOs;
 using TaskFlow.Application.Interfaces;
 using TaskFlow.Domain.Entities;
 using TaskFlow.Domain.Interfaces;
@@ -19,6 +20,19 @@ public class WorkItemService : IWorkItemService
         var entities = await _repository.GetAllAsync();
         return entities.Select(ToDto).ToList();
     }
+    
+    public async Task<PagedResult<WorkItemDto>> GetPagedAsync(PaginationQuery query)
+    {
+        var (items, totalCount) = await _repository.GetPagedAsync(query.PageNumber, query.PageSize);
+
+        return new PagedResult<WorkItemDto>
+        {
+            Items = items.Select(ToDto).ToList(),
+            TotalCount = totalCount,
+            PageNumber = query.PageNumber,
+            PageSize = query.PageSize
+        };
+    }
 
     public async Task<WorkItemDto?> GetByIdAsync(Guid id)
     {
@@ -28,7 +42,12 @@ public class WorkItemService : IWorkItemService
 
     public async Task<WorkItemDto> CreateAsync(CreateWorkItemDto dto)
     {
-        var entity = WorkItem.Create(dto.Title, dto.Description);
+        var maxOrder = await _repository.GetMaxOrderInColumnAsync(dto.ColumnId);
+        var order = maxOrder.HasValue ? maxOrder.Value + 1000 : 1000;
+        
+        var entity = WorkItem.Create(dto.Title, dto.Description, dto.ColumnId, order);
+
+        entity.UpdatedAt = DateTime.UtcNow;
 
         await _repository.CreateAsync(entity);
         await _repository.SaveChangesAsync();
@@ -47,9 +66,6 @@ public class WorkItemService : IWorkItemService
 
         if (dto.Title != null) entity.Title = dto.Title;
         if (dto.Description != null) entity.Description = dto.Description;
-        if (dto.Status.HasValue) entity.Status = dto.Status.Value;
-
-        entity.UpdatedAt = DateTime.UtcNow;
 
         await _repository.UpdateAsync(entity);
         await _repository.SaveChangesAsync();
@@ -72,13 +88,36 @@ public class WorkItemService : IWorkItemService
         return true;
     }
 
+    public async Task MoveAsync(Guid id, MoveWorkItemDto dto)
+    {
+        var entity = await _repository.GetByIdAsync(id);
+        if (entity == null)
+        {
+            return;
+        }
+
+        double newOrder;
+        if (dto.PrevPosition.HasValue && dto.NextPosition.HasValue)
+            newOrder = (dto.PrevPosition.Value + dto.NextPosition.Value) / 2.0;
+        else if (dto.PrevPosition.HasValue)
+            newOrder = dto.PrevPosition.Value + 1000;
+        else if (dto.NextPosition.HasValue)
+            newOrder = dto.NextPosition.Value / 2.0;
+        else
+            newOrder = 1000;
+
+        entity.ColumnId = dto.ColumnId;
+        entity.Order = newOrder;
+
+        await _repository.UpdateAsync(entity);
+        await _repository.SaveChangesAsync();
+    }
+
     private static WorkItemDto ToDto(WorkItem x) => new()
     {
         Id = x.Id,
         Title = x.Title,
         Description = x.Description,
-        Status = x.Status,
-        CreatedAt = x.CreatedAt,
-        UpdatedAt = x.UpdatedAt
+        Order = x.Order
     };
 }
