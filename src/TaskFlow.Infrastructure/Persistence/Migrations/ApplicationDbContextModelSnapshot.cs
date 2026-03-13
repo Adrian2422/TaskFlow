@@ -34,6 +34,9 @@ namespace TaskFlow.Infrastructure.Persistence.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -57,6 +60,9 @@ namespace TaskFlow.Infrastructure.Persistence.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsProtected")
                         .HasColumnType("bit");
@@ -84,7 +90,10 @@ namespace TaskFlow.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ColumnId")
+                    b.Property<Guid>("BoardId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ColumnId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
@@ -92,6 +101,9 @@ namespace TaskFlow.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("bit");
 
                     b.Property<double>("Order")
                         .HasColumnType("float");
@@ -104,6 +116,8 @@ namespace TaskFlow.Infrastructure.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BoardId");
 
                     b.HasIndex("ColumnId");
 
@@ -123,17 +137,26 @@ namespace TaskFlow.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("TaskFlow.Domain.Entities.WorkItem", b =>
                 {
+                    b.HasOne("TaskFlow.Domain.Entities.Board", "Board")
+                        .WithMany("BacklogItems")
+                        .HasForeignKey("BoardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("TaskFlow.Domain.Entities.BoardColumn", "Column")
                         .WithMany("WorkItems")
                         .HasForeignKey("ColumnId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Board");
 
                     b.Navigation("Column");
                 });
 
             modelBuilder.Entity("TaskFlow.Domain.Entities.Board", b =>
                 {
+                    b.Navigation("BacklogItems");
+
                     b.Navigation("Columns");
                 });
 

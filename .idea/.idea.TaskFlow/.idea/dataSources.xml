@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="db" uuid="2e0ce93c-0a58-4337-922d-fac12f9ce353">
+    <data-source source="LOCAL" name="db" uuid="04ad30a7-f1dd-4776-bf40-e89d498cba99">
       <driver-ref>sqlserver.jb</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.jetbrains.jdbc.sqlserver.SqlServerDriver</jdbc-driver>
-      <jdbc-url>Server=127.0.0.1,53117;User ID=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=true</jdbc-url>
+      <jdbc-url>Server=127.0.0.1,49284;User ID=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=true</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

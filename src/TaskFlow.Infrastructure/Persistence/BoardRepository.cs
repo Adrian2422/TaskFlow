@@ -27,6 +27,7 @@ public class BoardRepository : IBoardRepository
     public async Task<Board?> GetWithColumnsAndItemsAsync(Guid id)
     {
         return await _context.Boards
+            .Include(b => b.BacklogItems)
             .Include(b => b.Columns)
                 .ThenInclude(c => c.WorkItems)
             .FirstOrDefaultAsync(b => b.Id == id);

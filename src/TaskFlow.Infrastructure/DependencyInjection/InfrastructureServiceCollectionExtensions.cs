@@ -19,7 +19,7 @@ public static class InfrastructureServiceCollectionExtensions
         services.AddScoped<IOrderNormalizationService, OrderNormalizationService>();
         services.AddHostedService<WorkItemNormalizationWorker>();
         services.AddHostedService<ColumnNormalizationWorker>();
-        
+
         return services;
     }
 }

@@ -33,6 +33,13 @@ public class BoardColumnRepository : IBoardColumnRepository
             .MaxAsync(c => (double?)c.Order) ?? 0;
     }
 
+    public async Task<BoardColumn?> GetByIdWithWorkItemsAsync(Guid id)
+    {
+        return await _context.Columns
+            .Include(c => c.WorkItems)
+            .FirstOrDefaultAsync(c => c.Id == id);
+    }
+
     public async Task CreateAsync(BoardColumn column)
     {
         await _context.Columns.AddAsync(column);

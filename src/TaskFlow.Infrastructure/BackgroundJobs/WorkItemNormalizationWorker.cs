@@ -4,7 +4,7 @@ using TaskFlow.Application.Interfaces;
 
 namespace TaskFlow.Infrastructure.BackgroundJobs;
 
-public class WorkItemNormalizationWorker: BackgroundService
+public class WorkItemNormalizationWorker : BackgroundService
 {
     private readonly IServiceScopeFactory _scopeFactory;
 

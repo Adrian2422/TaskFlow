@@ -45,6 +45,7 @@ public class DatabaseSeeder
         foreach (var item in workItems)
         {
             var randomColumn = columns[new Random().Next(columns.Count)];
+            item.BoardId = board.Id; // Ensure BoardId is set
             randomColumn.WorkItems.Add(item);
         }
 
