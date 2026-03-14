@@ -1,4 +1,4 @@
-﻿namespace TaskFlow.Api.IntegrationTests;
+﻿namespace TaskFlow.Domain.UnitTests;
 
 public class UnitTest1
 {

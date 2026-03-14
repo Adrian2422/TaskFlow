@@ -12,8 +12,9 @@
     </Project>
   </Folder>
   <Folder Name="/tests/">
-    <Project Path="tests/TaskFlow.Api.IntegrationTests/TaskFlow.Api.IntegrationTests.csproj" />
-    <Project Path="tests/TaskFlow.Application.Tests/TaskFlow.Application.Tests.csproj" />
-    <Project Path="tests/TaskFlow.Domain.Tests/TaskFlow.Domain.Tests.csproj" />
+    <Project Path="tests/TaskFlow.Api.UnitTests/TaskFlow.Api.UnitTests.csproj" />
+    <Project Path="tests/TaskFlow.Application.UnitTests/TaskFlow.Application.UnitTests.csproj" />
+    <Project Path="tests/TaskFlow.Domain.UnitTests/TaskFlow.Domain.UnitTests.csproj" />
+    <Project Path="tests/TaskFlow.Infrastructure.UnitTests/TaskFlow.Infrastructure.UnitTests.csproj" />
   </Folder>
 </Solution>
