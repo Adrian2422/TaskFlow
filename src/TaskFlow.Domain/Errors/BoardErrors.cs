@@ -1,4 +1,4 @@
-﻿using TaskFlow.Application.Common;
+﻿using TaskFlow.Domain.Common;
 
 namespace TaskFlow.Domain.Errors;
 
