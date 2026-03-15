@@ -23,7 +23,7 @@ public class DeleteWorkItemCommandHandler : IRequestHandler<DeleteWorkItemComman
 
         if (!entity.IsArchived)
         {
-            return Result.Failure(WorkItemErrors.NotArchived);
+            return Result.Failure(WorkItemErrors.DeleteNotArchived);
         }
 
         await _repository.DeleteAsync(entity);

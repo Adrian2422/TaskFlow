@@ -24,7 +24,7 @@ public class DeleteBoardCommandHandler : IRequestHandler<DeleteBoardCommand, Res
 
         if (!board.IsArchived)
         {
-            return Result.Failure(BoardErrors.NotArchived);
+            return Result.Failure(BoardErrors.DeleteNotArchived);
         }
 
         await _boardRepository.DeleteAsync(board);

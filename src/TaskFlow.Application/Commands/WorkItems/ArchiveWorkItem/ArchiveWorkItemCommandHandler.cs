@@ -20,6 +20,11 @@ public class ArchiveWorkItemCommandHandler : IRequestHandler<ArchiveWorkItemComm
         {
             return Result.Failure(WorkItemErrors.NotFound(request.Id));
         }
+        
+        if (entity.IsArchived)
+        {
+            return Result.Failure(WorkItemErrors.AlreadyArchived(request.Id));
+        }
 
         entity.Archive();
 

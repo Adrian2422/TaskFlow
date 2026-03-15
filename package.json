@@ -7,7 +7,10 @@
     "test": "tests"
   },
   "scripts": {
-    "prepare": "husky"
+    "prepare": "husky",
+    "test:coverage": "dotnet test --collect:\"XPlat Code Coverage\"",
+    "test:report": "dotnet tool run reportgenerator -reports:\"tests/**/TestResults/**/coverage.cobertura.xml\" -targetdir:\"coverage-report\" -reporttypes:Html",
+    "test:full": "npm run test:coverage && npm run test:report"
   },
   "repository": {
     "type": "git",

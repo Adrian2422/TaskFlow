@@ -1,4 +1,4 @@
-﻿namespace TaskFlow.Application.Common;
+﻿namespace TaskFlow.Domain.Common;
 
 public record Error(string Code, string Description)
 {

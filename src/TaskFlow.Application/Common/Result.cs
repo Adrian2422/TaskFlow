@@ -1,4 +1,6 @@
-﻿namespace TaskFlow.Application.Common;
+﻿using TaskFlow.Domain.Common;
+
+namespace TaskFlow.Application.Common;
 
 public class Result
 {
