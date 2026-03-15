@@ -1,5 +1,5 @@
-﻿using Moq;
-using FluentAssertions;
+using Moq;
+using Shouldly;
 using TaskFlow.Application.Commands.Columns.UpdateColumn;
 using TaskFlow.Domain.Entities;
 using TaskFlow.Domain.Errors;
@@ -39,11 +39,11 @@ public class UpdateColumnCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.IsSuccess.Should().BeTrue();
-        result.Value.Name.Should().Be(command.Name);
-        result.Value.Order.Should().Be(existingBoardColumn.Order);
+        result.IsSuccess.ShouldBeTrue();
+        result.Value.Name.ShouldBe(command.Name);
+        result.Value.Order.ShouldBe(existingBoardColumn.Order);
 
-        existingBoardColumn.Name.Should().Be(command.Name);
+        existingBoardColumn.Name.ShouldBe(command.Name);
         
         _columnRepoMock.Verify(x => x.UpdateAsync(It.IsAny<BoardColumn>()), Times.Once);
         _columnRepoMock.Verify(x => x.SaveChangesAsync(), Times.Once);
@@ -67,8 +67,8 @@ public class UpdateColumnCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().Be(ColumnErrors.NotFound(columnId, boardId));
+        result.IsFailure.ShouldBeTrue();
+        result.Error.ShouldBe(ColumnErrors.NotFound(columnId, boardId));
         
         _columnRepoMock.Verify(x => x.UpdateAsync(It.IsAny<BoardColumn>()), Times.Never);
         _columnRepoMock.Verify(x => x.SaveChangesAsync(), Times.Never);
@@ -92,10 +92,10 @@ public class UpdateColumnCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.IsSuccess.Should().BeTrue();
+        result.IsSuccess.ShouldBeTrue();
 
-        result.Value.Name.Should().Be("New 1");
-        result.Value.Order.Should().Be(existingBoardColumn.Order);
+        result.Value.Name.ShouldBe("New 1");
+        result.Value.Order.ShouldBe(existingBoardColumn.Order);
 
         
         _columnRepoMock.Verify(x => x.UpdateAsync(It.IsAny<BoardColumn>()), Times.Once);

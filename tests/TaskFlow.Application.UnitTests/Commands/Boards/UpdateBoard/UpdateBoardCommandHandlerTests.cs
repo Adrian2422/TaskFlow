@@ -1,5 +1,5 @@
-﻿using Moq;
-using FluentAssertions;
+using Moq;
+using Shouldly;
 using TaskFlow.Application.Commands.Boards.UpdateBoard;
 using TaskFlow.Domain.Entities;
 using TaskFlow.Domain.Errors;
@@ -33,12 +33,12 @@ public class UpdateBoardCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.IsSuccess.Should().BeTrue();
-        result.Value.Name.Should().Be(command.Name);
-        result.Value.Description.Should().Be(command.Description);
+        result.IsSuccess.ShouldBeTrue();
+        result.Value.Name.ShouldBe(command.Name);
+        result.Value.Description.ShouldBe(command.Description);
 
-        existingBoard.Name.Should().Be(command.Name);
-        existingBoard.Description.Should().Be(command.Description);
+        existingBoard.Name.ShouldBe(command.Name);
+        existingBoard.Description.ShouldBe(command.Description);
         
         _boardRepoMock.Verify(x => x.UpdateAsync(It.IsAny<Board>()), Times.Once);
         _boardRepoMock.Verify(x => x.SaveChangesAsync(), Times.Once);
@@ -57,8 +57,8 @@ public class UpdateBoardCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().Be(BoardErrors.NotFound(boardId));
+        result.IsFailure.ShouldBeTrue();
+        result.Error.ShouldBe(BoardErrors.NotFound(boardId));
         
         _boardRepoMock.Verify(x => x.UpdateAsync(It.IsAny<Board>()), Times.Never);
         _boardRepoMock.Verify(x => x.SaveChangesAsync(), Times.Never);
@@ -78,10 +78,10 @@ public class UpdateBoardCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.IsSuccess.Should().BeTrue();
+        result.IsSuccess.ShouldBeTrue();
 
-        existingBoard.Name.Should().Be("TaskFlow");
-        existingBoard.Description.Should().Be(command.Description);
+        existingBoard.Name.ShouldBe("TaskFlow");
+        existingBoard.Description.ShouldBe(command.Description);
         
         _boardRepoMock.Verify(x => x.UpdateAsync(It.IsAny<Board>()), Times.Once);
         _boardRepoMock.Verify(x => x.SaveChangesAsync(), Times.Once);

@@ -1,5 +1,5 @@
-﻿using Moq;
-using FluentAssertions;
+using Moq;
+using Shouldly;
 using TaskFlow.Application.Commands.WorkItems.UpdateWorkItem;
 using TaskFlow.Domain.Entities;
 using TaskFlow.Domain.Errors;
@@ -33,12 +33,12 @@ public class UpdateWorkItemCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.IsSuccess.Should().BeTrue();
-        result.Value.Title.Should().Be(command.Title);
-        result.Value.Description.Should().Be(command.Description);
+        result.IsSuccess.ShouldBeTrue();
+        result.Value.Title.ShouldBe(command.Title);
+        result.Value.Description.ShouldBe(command.Description);
 
-        existingWorkItem.Title.Should().Be(command.Title);
-        existingWorkItem.Description.Should().Be(command.Description);
+        existingWorkItem.Title.ShouldBe(command.Title);
+        existingWorkItem.Description.ShouldBe(command.Description);
         
         _workItemRepoMock.Verify(x => x.UpdateAsync(It.IsAny<WorkItem>()), Times.Once);
         _workItemRepoMock.Verify(x => x.SaveChangesAsync(), Times.Once);
@@ -57,8 +57,8 @@ public class UpdateWorkItemCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().Be(WorkItemErrors.NotFound(workItemId));
+        result.IsFailure.ShouldBeTrue();
+        result.Error.ShouldBe(WorkItemErrors.NotFound(workItemId));
         
         _workItemRepoMock.Verify(x => x.UpdateAsync(It.IsAny<WorkItem>()), Times.Never);
         _workItemRepoMock.Verify(x => x.SaveChangesAsync(), Times.Never);
@@ -78,10 +78,10 @@ public class UpdateWorkItemCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.IsSuccess.Should().BeTrue();
+        result.IsSuccess.ShouldBeTrue();
 
-        existingWorkItem.Title.Should().Be("Task 1");
-        existingWorkItem.Description.Should().Be(command.Description);
+        existingWorkItem.Title.ShouldBe("Task 1");
+        existingWorkItem.Description.ShouldBe(command.Description);
         
         _workItemRepoMock.Verify(x => x.UpdateAsync(It.IsAny<WorkItem>()), Times.Once);
         _workItemRepoMock.Verify(x => x.SaveChangesAsync(), Times.Once);

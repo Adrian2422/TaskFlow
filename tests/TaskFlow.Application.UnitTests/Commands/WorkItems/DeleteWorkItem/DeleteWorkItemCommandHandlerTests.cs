@@ -1,5 +1,5 @@
-﻿using Moq;
-using FluentAssertions;
+using Moq;
+using Shouldly;
 using TaskFlow.Application.Commands.WorkItems.DeleteWorkItem;
 using TaskFlow.Domain.Entities;
 using TaskFlow.Domain.Errors;
@@ -32,7 +32,7 @@ public class DeleteWorkItemCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
         
         // Assert
-        result.IsSuccess.Should().BeTrue();
+        result.IsSuccess.ShouldBeTrue();
         
         _workItemRepoMock.Verify(x => x.DeleteAsync(It.IsAny<WorkItem>()), Times.Once);
         _workItemRepoMock.Verify(x => x.SaveChangesAsync(), Times.Once);
@@ -52,8 +52,8 @@ public class DeleteWorkItemCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
         
         // Assert
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().Be(WorkItemErrors.DeleteNotArchived);
+        result.IsFailure.ShouldBeTrue();
+        result.Error.ShouldBe(WorkItemErrors.DeleteNotArchived);
         
         _workItemRepoMock.Verify(x => x.DeleteAsync(It.IsAny<WorkItem>()), Times.Never);
         _workItemRepoMock.Verify(x => x.SaveChangesAsync(), Times.Never);
@@ -72,8 +72,8 @@ public class DeleteWorkItemCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
         
         // Assert
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().Be(WorkItemErrors.NotFound(workItemId));
+        result.IsFailure.ShouldBeTrue();
+        result.Error.ShouldBe(WorkItemErrors.NotFound(workItemId));
         
         _workItemRepoMock.Verify(x => x.DeleteAsync(It.IsAny<WorkItem>()), Times.Never);
         _workItemRepoMock.Verify(x => x.SaveChangesAsync(), Times.Never);

@@ -1,5 +1,5 @@
-﻿using Moq;
-using FluentAssertions;
+using Moq;
+using Shouldly;
 using TaskFlow.Application.Commands.Columns.CreateColumn;
 using TaskFlow.Application.Commands.WorkItems.CreateWorkItem;
 using TaskFlow.Domain.Entities;
@@ -36,9 +36,9 @@ public class CreateColumnCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.IsSuccess.Should().BeTrue();
-        result.Value.Name.Should().Be("New");
-        result.Value.Order.Should().Be(0);
+        result.IsSuccess.ShouldBeTrue();
+        result.Value.Name.ShouldBe("New");
+        result.Value.Order.ShouldBe(0);
         _columnRepoMock.Verify(x => x.CreateAsync(It.IsAny<BoardColumn>()), Times.Once);
         _columnRepoMock.Verify(x => x.SaveChangesAsync(), Times.Once);
     }
@@ -57,8 +57,8 @@ public class CreateColumnCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().Be(BoardErrors.NotFound(boardId));
+        result.IsFailure.ShouldBeTrue();
+        result.Error.ShouldBe(BoardErrors.NotFound(boardId));
         
         _columnRepoMock.Verify(x => x.CreateAsync(It.IsAny<BoardColumn>()), Times.Never);
         _columnRepoMock.Verify(x => x.SaveChangesAsync(), Times.Never);

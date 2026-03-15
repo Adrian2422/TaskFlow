@@ -1,5 +1,5 @@
-﻿using Moq;
-using FluentAssertions;
+using Moq;
+using Shouldly;
 using TaskFlow.Application.Commands.Columns.DeleteColumn;
 using TaskFlow.Domain.Entities;
 using TaskFlow.Domain.Errors;
@@ -37,7 +37,7 @@ public class DeleteColumnCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
         
         // Assert
-        result.IsSuccess.Should().BeTrue();
+        result.IsSuccess.ShouldBeTrue();
         
         _columnRepoMock.Verify(x => x.DeleteAsync(existingColumn), Times.Once);
         _columnRepoMock.Verify(x => x.SaveChangesAsync(), Times.Once);
@@ -57,8 +57,8 @@ public class DeleteColumnCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
         
         // Assert
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().Be(ColumnErrors.NotFound(columnId, boardId));
+        result.IsFailure.ShouldBeTrue();
+        result.Error.ShouldBe(ColumnErrors.NotFound(columnId, boardId));
         
         _columnRepoMock.Verify(x => x.DeleteAsync(It.IsAny<BoardColumn>()), Times.Never);
         _columnRepoMock.Verify(x => x.SaveChangesAsync(), Times.Never);
@@ -80,8 +80,8 @@ public class DeleteColumnCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().Be(ColumnErrors.Protected);
+        result.IsFailure.ShouldBeTrue();
+        result.Error.ShouldBe(ColumnErrors.Protected);
 
         _columnRepoMock.Verify(x => x.DeleteAsync(It.IsAny<BoardColumn>()), Times.Never);
     }
@@ -111,9 +111,9 @@ public class DeleteColumnCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.IsSuccess.Should().BeTrue();
-        workItem.ColumnId.Should().BeNull();
-        workItem.Order.Should().Be(1500.0);
+        result.IsSuccess.ShouldBeTrue();
+        workItem.ColumnId.ShouldBeNull();
+        workItem.Order.ShouldBe(1500.0);
 
         _workItemRepoMock.Verify(x => x.UpdateAsync(workItem), Times.Once);
         _columnRepoMock.Verify(x => x.DeleteAsync(existingColumn), Times.Once);

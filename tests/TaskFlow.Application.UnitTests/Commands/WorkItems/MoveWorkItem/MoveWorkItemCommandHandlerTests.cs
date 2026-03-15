@@ -1,5 +1,5 @@
-﻿using Moq;
-using FluentAssertions;
+using Moq;
+using Shouldly;
 using TaskFlow.Application.Commands.WorkItems.MoveWorkItem;
 using TaskFlow.Domain.Entities;
 using TaskFlow.Domain.Interfaces;
@@ -38,7 +38,7 @@ public class MoveWorkItemCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.IsSuccess.Should().BeTrue();
+        result.IsSuccess.ShouldBeTrue();
         _workItemRepoMock.Verify(x => x.UpdateAsync(It.Is<WorkItem>(wi => 
             wi.ColumnId == columnId && 
             wi.Order.Equals(500)

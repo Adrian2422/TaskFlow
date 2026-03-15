@@ -1,5 +1,5 @@
-﻿using Moq;
-using FluentAssertions;
+using Moq;
+using Shouldly;
 using TaskFlow.Application.Commands.Columns.MoveColumn;
 using TaskFlow.Domain.Entities;
 using TaskFlow.Domain.Interfaces;
@@ -35,7 +35,7 @@ public class MoveColumnCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.IsSuccess.Should().BeTrue();
+        result.IsSuccess.ShouldBeTrue();
         _boardColumnRepoMock.Verify(x => x.UpdateAsync(It.Is<BoardColumn>(bc => 
             bc.BoardId == boardId && 
             bc.Order.Equals(500)

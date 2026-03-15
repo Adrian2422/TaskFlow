@@ -1,5 +1,5 @@
-﻿using Moq;
-using FluentAssertions;
+using Moq;
+using Shouldly;
 using TaskFlow.Application.Commands.Boards.CreateBoard;
 using TaskFlow.Domain.Interfaces;
 using TaskFlow.Domain.Entities;
@@ -29,8 +29,8 @@ public class CreateBoardCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.Should().NotBeNull();
-        result.Value.Name.Should().Be("TaskFlow");
+        result.ShouldNotBeNull();
+        result.Value.Name.ShouldBe("TaskFlow");
         _boardRepoMock.Verify(x => x.CreateAsync(It.IsAny<Board>()), Times.Once);
     }
 }

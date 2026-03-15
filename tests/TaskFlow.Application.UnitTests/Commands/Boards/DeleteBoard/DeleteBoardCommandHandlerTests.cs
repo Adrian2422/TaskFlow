@@ -1,5 +1,5 @@
-﻿using Moq;
-using FluentAssertions;
+using Moq;
+using Shouldly;
 using TaskFlow.Application.Commands.Boards.DeleteBoard;
 using TaskFlow.Domain.Entities;
 using TaskFlow.Domain.Errors;
@@ -32,7 +32,7 @@ public class DeleteBoardCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
         
         // Assert
-        result.IsSuccess.Should().BeTrue();
+        result.IsSuccess.ShouldBeTrue();
         
         _boardRepoMock.Verify(x => x.DeleteAsync(It.IsAny<Board>()), Times.Once);
         _boardRepoMock.Verify(x => x.SaveChangesAsync(), Times.Once);
@@ -52,8 +52,8 @@ public class DeleteBoardCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
         
         // Assert
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().Be(BoardErrors.DeleteNotArchived);
+        result.IsFailure.ShouldBeTrue();
+        result.Error.ShouldBe(BoardErrors.DeleteNotArchived);
         
         _boardRepoMock.Verify(x => x.DeleteAsync(It.IsAny<Board>()), Times.Never);
         _boardRepoMock.Verify(x => x.SaveChangesAsync(), Times.Never);
@@ -72,8 +72,8 @@ public class DeleteBoardCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
         
         // Assert
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().Be(BoardErrors.NotFound(boardId));
+        result.IsFailure.ShouldBeTrue();
+        result.Error.ShouldBe(BoardErrors.NotFound(boardId));
         
         _boardRepoMock.Verify(x => x.DeleteAsync(It.IsAny<Board>()), Times.Never);
         _boardRepoMock.Verify(x => x.SaveChangesAsync(), Times.Never);

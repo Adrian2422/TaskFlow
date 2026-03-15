@@ -1,5 +1,5 @@
-﻿using Moq;
-using FluentAssertions;
+using Moq;
+using Shouldly;
 using TaskFlow.Application.Commands.WorkItems.CreateWorkItem;
 using TaskFlow.Domain.Entities;
 using TaskFlow.Domain.Errors;
@@ -37,9 +37,9 @@ public class CreateWorkItemCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.IsSuccess.Should().BeTrue();
-        result.Value.Title.Should().Be("Task 1");
-        result.Value.Order.Should().Be(0);
+        result.IsSuccess.ShouldBeTrue();
+        result.Value.Title.ShouldBe("Task 1");
+        result.Value.Order.ShouldBe(0);
         _workItemRepoMock.Verify(x => x.CreateAsync(It.IsAny<WorkItem>()), Times.Once);
         _workItemRepoMock.Verify(x => x.SaveChangesAsync(), Times.Once);
     }
@@ -58,8 +58,8 @@ public class CreateWorkItemCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().Be(BoardErrors.NotFound(boardId));
+        result.IsFailure.ShouldBeTrue();
+        result.Error.ShouldBe(BoardErrors.NotFound(boardId));
         
         _workItemRepoMock.Verify(x => x.CreateAsync(It.IsAny<WorkItem>()), Times.Never);
         _workItemRepoMock.Verify(x => x.SaveChangesAsync(), Times.Never);
@@ -84,7 +84,7 @@ public class CreateWorkItemCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.IsSuccess.Should().BeTrue();
+        result.IsSuccess.ShouldBeTrue();
         _workItemRepoMock.Verify(x => x.CreateAsync(It.Is<WorkItem>(wi => wi.ColumnId == columnId)), Times.Once);
         _workItemRepoMock.Verify(x => x.SaveChangesAsync(), Times.Once);
     }
