@@ -16,10 +16,15 @@ public class ArchiveBoardCommandHandler : IRequestHandler<ArchiveBoardCommand, R
 
     public async Task<Result> Handle(ArchiveBoardCommand request, CancellationToken cancellationToken)
     {
-        var board = await _boardRepository.GetWithColumnsAndItemsAsync(request.Id);
+        var board = await _boardRepository.GetByIdAsync(request.Id);
         if (board == null)
         {
             return Result.Failure(BoardErrors.NotFound(request.Id));
+        }
+        
+        if (board.IsArchived)
+        {
+            return Result.Failure(BoardErrors.AlreadyArchived(request.Id));
         }
 
         board.Archive();

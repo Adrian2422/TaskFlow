@@ -20,6 +20,11 @@ public class RestoreWorkItemCommandHandler : IRequestHandler<RestoreWorkItemComm
         {
             return Result.Failure(WorkItemErrors.NotFound(request.Id));
         }
+        
+        if (!entity.IsArchived)
+        {
+            return Result.Failure(WorkItemErrors.RestoreNotArchived);
+        }
 
         entity.Restore();
 

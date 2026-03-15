@@ -30,12 +30,12 @@ public class CreateWorkItemCommandHandler : IRequestHandler<CreateWorkItemComman
         if (request.ColumnId.HasValue)
         {
             var maxOrder = await _workItemRepository.GetMaxOrderInColumnAsync(request.ColumnId.Value);
-            order = maxOrder.HasValue ? maxOrder.Value + 1000 : 1000;
+            order = maxOrder.HasValue ? maxOrder.Value + 1000 : 0;
         }
         else
         {
             var maxOrder = await _workItemRepository.GetMaxOrderInBacklogAsync(request.BoardId);
-            order = maxOrder.HasValue ? maxOrder.Value + 1000 : 1000;
+            order = maxOrder.HasValue ? maxOrder.Value + 1000 : 0;
         }
 
         var entity = WorkItem.Create(request.Title, request.Description, request.BoardId, request.ColumnId, order);

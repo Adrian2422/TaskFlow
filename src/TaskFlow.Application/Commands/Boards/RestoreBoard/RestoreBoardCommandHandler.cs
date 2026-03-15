@@ -22,6 +22,11 @@ public class RestoreBoardCommandHandler : IRequestHandler<RestoreBoardCommand, R
             return Result.Failure(BoardErrors.NotFound(request.Id));
         }
 
+        if (!board.IsArchived)
+        {
+            return Result.Failure(BoardErrors.RestoreNotArchived);
+        }
+
         board.Restore();
 
         await _boardRepository.UpdateAsync(board);

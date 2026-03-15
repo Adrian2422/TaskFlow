@@ -26,11 +26,11 @@ public class BoardColumnRepository : IBoardColumnRepository
             .ToListAsync();
     }
 
-    public async Task<double> GetMaxOrderInBoardAsync(Guid boardId)
+    public async Task<double?> GetMaxOrderInBoardAsync(Guid boardId)
     {
         return await _context.Columns
             .Where(c => c.BoardId == boardId)
-            .MaxAsync(c => (double?)c.Order) ?? 0;
+            .MaxAsync(c => (double?)c.Order);
     }
 
     public async Task<BoardColumn?> GetByIdWithWorkItemsAsync(Guid id)
