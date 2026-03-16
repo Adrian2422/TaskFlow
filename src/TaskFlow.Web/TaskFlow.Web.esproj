@@ -4,6 +4,9 @@
     <ShouldRunBuildScript>false</ShouldRunBuildScript>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="src\app\features\" />
+    <Folder Include="src\app\features\landing\components\" />
+    <Folder Include="src\app\layout\" />
     <Folder Include="src\app\shared\ui\" />
   </ItemGroup>
   <ItemGroup>

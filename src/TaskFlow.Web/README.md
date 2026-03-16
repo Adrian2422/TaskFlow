@@ -28,6 +28,11 @@ src/app/
 │   ├── landing/            # Public Landing Page
 │   ├── dashboard/          # User Dashboard (board list)
 │   ├── boards/             # Board View (Kanban)
+│   │   ├── components/     # Board-specific UI (e.g. ColumnCard)
+│   │   ├── services/       # Board-specific logic/API wrappers
+│   │   ├── store/          # NgRx Signal Store for board state
+│   │   ├── models/         # Board-specific interfaces
+│   │   └── pages/          # Main page components for routing
 │   └── work-items/         # Task details, editing (often as modals)
 └── layout/                 # Application skeleton
     ├── header/
