@@ -1,59 +1,45 @@
-# TaskFlowWeb
+# TaskFlow.Web
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.0.
+The frontend layer of the TaskFlow application.
 
-## Development server
+## Technologies Used
 
-To start a local development server, run:
+- **Angular 21**
+- **zardui** - Component library (planned)
+- **Tailwind CSS** - Styling (with SCSS where needed)
+- **Orval** - API model generation (planned)
+- **NgRx Signal Store** - State management (planned)
 
-```bash
-ng serve
+## Project Structure (Target)
+
+The project follows a feature-based modular structure to ensure scalability:
+
+```text
+src/app/
+├── core/                   # Singletons: API services, interceptors, authorization
+│   ├── services/           # ApiService, BoardService, WorkItemService
+│   ├── interceptors/       # AuthInterceptor, ErrorInterceptor
+│   └── models/             # DTO interfaces (BoardDto, ColumnDto, etc.)
+├── shared/                 # Shared UI components (button, modal, loader)
+│   ├── components/         # ButtonComponent, ModalComponent, CardComponent
+│   └── pipes/              # Custom formatting pipes
+├── features/               # Functional modules (views)
+│   ├── auth/               # Login, Registration
+│   ├── landing/            # Public Landing Page
+│   ├── dashboard/          # User Dashboard (board list)
+│   ├── boards/             # Board View (Kanban)
+│   │   ├── components/     # Board-specific UI (e.g. ColumnCard)
+│   │   ├── services/       # Board-specific logic/API wrappers
+│   │   ├── store/          # NgRx Signal Store for board state
+│   │   ├── models/         # Board-specific interfaces
+│   │   └── pages/          # Main page components for routing
+│   └── work-items/         # Task details, editing (often as modals)
+└── layout/                 # Application skeleton
+    ├── header/
+    ├── sidebar/
+    └── footer/
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Current Status
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+The project is currently in the initial scaffolding phase. The directory structure mentioned above will be implemented as features are developed. Core dependencies (zardui, ngrx, orval) will be added upon first usage.

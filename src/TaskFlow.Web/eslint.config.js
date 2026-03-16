@@ -19,7 +19,7 @@ module.exports = defineConfig([
         "error",
         {
           type: "attribute",
-          prefix: "app",
+          prefix: ["app", "z"],
           style: "camelCase",
         },
       ],
@@ -27,8 +27,9 @@ module.exports = defineConfig([
         "error",
         {
           type: "element",
-          prefix: "app",
+          prefix: ["app", "z"],
           style: "kebab-case",
+
         },
       ],
     },
