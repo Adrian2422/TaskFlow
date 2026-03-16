@@ -1,13 +1,25 @@
 import { MediaMatcher } from '@angular/cdk/layout';
 import { isPlatformBrowser, DOCUMENT } from '@angular/common';
-import { afterNextRender, DestroyRef, Injectable, PLATFORM_ID, computed, inject, signal, effect } from '@angular/core';
+import {
+  afterNextRender,
+  DestroyRef,
+  Injectable,
+  PLATFORM_ID,
+  computed,
+  inject,
+  signal,
+  effect,
+} from '@angular/core';
 
 export enum EDarkModes {
   LIGHT = 'light',
   DARK = 'dark',
   SYSTEM = 'system',
 }
-export type DarkModeOptions = EDarkModes.LIGHT | EDarkModes.DARK | EDarkModes.SYSTEM;
+export type DarkModeOptions =
+  | EDarkModes.LIGHT
+  | EDarkModes.DARK
+  | EDarkModes.SYSTEM;
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +30,8 @@ export class ZardDarkMode {
   private readonly mediaMatcher = inject(MediaMatcher);
 
   private static readonly STORAGE_KEY = 'theme';
-  private handleThemeChange = (event: MediaQueryListEvent) => this.systemDark.set(event.matches);
+  private handleThemeChange = (event: MediaQueryListEvent) =>
+    this.systemDark.set(event.matches);
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly themeSignal = signal<DarkModeOptions>(EDarkModes.SYSTEM);
   private _query?: MediaQueryList;
@@ -70,7 +83,10 @@ export class ZardDarkMode {
     if (targetMode) {
       this.applyTheme(targetMode);
     } else {
-      const next = this.themeMode() === EDarkModes.DARK ? EDarkModes.LIGHT : EDarkModes.DARK;
+      const next =
+        this.themeMode() === EDarkModes.DARK
+          ? EDarkModes.LIGHT
+          : EDarkModes.DARK;
       this.applyTheme(next);
     }
   }
@@ -86,7 +102,9 @@ export class ZardDarkMode {
 
   private ensureQueryInitialized(): void {
     if (!this._query) {
-      this._query = this.mediaMatcher.matchMedia('(prefers-color-scheme: dark)');
+      this._query = this.mediaMatcher.matchMedia(
+        '(prefers-color-scheme: dark)'
+      );
       this.systemDark.set(this._query.matches);
       this.destroyRef.onDestroy(() => this.handleSystemChanges(false));
     }
@@ -94,7 +112,9 @@ export class ZardDarkMode {
 
   private get query(): MediaQueryList {
     if (!this.isBrowser || !this._query) {
-      throw new Error('MediaQueryList not available: either running on server or not initialized');
+      throw new Error(
+        'MediaQueryList not available: either running on server or not initialized'
+      );
     }
     return this._query;
   }
@@ -145,7 +165,11 @@ export class ZardDarkMode {
 
     try {
       const value = localStorage.getItem(ZardDarkMode.STORAGE_KEY);
-      if (value === EDarkModes.LIGHT || value === EDarkModes.DARK || value === EDarkModes.SYSTEM) {
+      if (
+        value === EDarkModes.LIGHT ||
+        value === EDarkModes.DARK ||
+        value === EDarkModes.SYSTEM
+      ) {
         return value;
       }
     } catch (error) {
@@ -165,7 +189,10 @@ export class ZardDarkMode {
       return false;
     }
 
-    return currentTheme === EDarkModes.DARK || (currentTheme === EDarkModes.SYSTEM && this.systemDark());
+    return (
+      currentTheme === EDarkModes.DARK ||
+      (currentTheme === EDarkModes.SYSTEM && this.systemDark())
+    );
   }
 
   private handleSystemChanges(addListener = true): void {

@@ -26,7 +26,7 @@
   },
   "lint-staged": {
     "*.{cs,cshtml}": "dotnet format --include",
-    "*.{html,css,scss,json,md,yaml}": "prettier --write",
+    "*.{js,ts,html,css,scss,json,md,yaml}": "prettier . --write",
     "src/TaskFlow.Web/**/*.{ts,js}": "npm --prefix src/TaskFlow.Web run lint"
   }
 }

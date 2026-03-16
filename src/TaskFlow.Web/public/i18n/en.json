@@ -1,0 +1,61 @@
+﻿{
+  "common": {
+    "enums": {
+      "languages": {
+        "en": "English"
+      }
+    }
+  },
+  "feature": {
+    "dashboard": {
+      "sidebar": {
+        "dashboard": "Dashboard",
+        "tasks": "Tasks",
+        "projects": "Projects",
+        "team": "Team",
+        "settings": "Settings",
+        "logout": "Logout"
+      },
+      "header": {
+        "search-placeholder": "Search tasks, projects...",
+        "welcome": "Welcome back",
+        "subtitle": "Here's what's happening with your projects today.",
+        "create-task": "Create Task"
+      },
+      "stats": {
+        "total-tasks": "Total Tasks",
+        "in-progress": "In Progress",
+        "completed": "Completed",
+        "overdue": "Overdue"
+      },
+      "sections": {
+        "recent-tasks": "Recent Tasks",
+        "activity": "Recent Activity"
+      },
+      "table": {
+        "task": "Task",
+        "status": "Status",
+        "priority": "Priority",
+        "due-date": "Due Date"
+      },
+      "common": {
+        "view-all": "View All",
+        "show-more": "Show More"
+      }
+    },
+    "landing": {
+      "components": {
+        "landing-header": {
+          "log-in": "Log in"
+        }
+      },
+      "hero": {
+        "subtitle": "TaskFlow is a Kanban-style board and task management tool for planning and managing work.",
+        "title1": "Ease of management",
+        "title2": "like never before"
+      },
+      "how-it-works": "How it works",
+      "sign-up": "Sign up"
+    }
+  }
+}

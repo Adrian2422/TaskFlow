@@ -1,9 +1,9 @@
 ﻿export default {
-  content: ["./src/**/*.{html,ts}"],
+  content: ['./src/**/*.{html,ts}'],
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Noto Sans"', "ui-sans-serif", "system-ui"],
+        sans: ['"Noto Sans"', 'ui-sans-serif', 'system-ui'],
       },
     },
   },

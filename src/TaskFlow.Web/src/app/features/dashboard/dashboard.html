@@ -1,0 +1,28 @@
+<app-main-layout #layout>
+  <div class="flex items-center">
+    <button
+      type="button"
+      z-button
+      zType="ghost"
+      zSize="sm"
+      class="-ml-2 cursor-pointer"
+      (click)="layout.toggleSidebar()"
+    >
+      <z-icon zType="panel-left" />
+    </button>
+
+    <z-divider zOrientation="vertical" class="ml-2 h-4" />
+
+    <z-breadcrumb zWrap="wrap" zAlign="start">
+      <z-breadcrumb-item [routerLink]="['/']">Home</z-breadcrumb-item>
+      <z-breadcrumb-item [routerLink]="['/']">
+        <span aria-current="page">Components</span>
+      </z-breadcrumb-item>
+    </z-breadcrumb>
+  </div>
+
+  <div class="space-y-4 py-4">
+    <z-skeleton class="h-80 w-full" />
+    <z-skeleton class="h-16 w-full" />
+  </div>
+</app-main-layout>

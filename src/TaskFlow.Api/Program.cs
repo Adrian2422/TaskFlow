@@ -4,6 +4,7 @@ using TaskFlow.Application.DependencyInjection;
 using TaskFlow.Infrastructure.AppDbContext;
 using TaskFlow.Infrastructure.Persistence;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
+using TaskFlow.Api.Extensions;
 using TaskFlow.Infrastructure.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,6 +35,8 @@ if (builder.Environment.IsDevelopment())
     });
 }
 
+builder.Services.AddWebCors(builder.Environment, builder.Configuration);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -54,6 +57,7 @@ if (app.Environment.IsDevelopment())
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "TaskFlow API V1");
     });
 }
+app.UseWebCors();
 
 app.UseExceptionHandler();
 

@@ -1,0 +1,25 @@
+﻿{
+  "common": {
+    "enums": {
+      "languages": {
+        "en": "Angielski"
+      }
+    }
+  },
+  "feature": {
+    "landing": {
+      "components": {
+        "landing-header": {
+          "log-in": "Zaloguj"
+        }
+      },
+      "hero": {
+        "subtitle": "TaskFlow to tablice i zadania w stylu Kanban do planowania i dowożenia pracy.",
+        "title1": "Łatwość zarządzania",
+        "title2": "jak nigdy dotąd"
+      },
+      "how-it-works": "Zobacz jak działa",
+      "sign-up": "Załóż konto"
+    }
+  }
+}
