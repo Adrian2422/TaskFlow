@@ -21,5 +21,26 @@
       "how-it-works": "Zobacz jak działa",
       "sign-up": "Załóż konto"
     }
+  },
+  "layout": {
+    "breadcrumbs": {
+      "dashboard": "Dashboard",
+      "home": "Strona główna"
+    },
+    "sidebar": {
+      "archive": "Archiwum",
+      "backlog": "Backlog",
+      "boards": "Tablice",
+      "boards-and-tasks": "Tablice i zadania",
+      "dashboard": "Dashboard",
+      "my-tasks": "Moje zadania",
+      "navigation": "Nawigacja",
+      "notifications": "Powiadomienia"
+    },
+    "user-menu": {
+      "log-out": "Wyloguj",
+      "profile": "Profil",
+      "settings": "Ustawienia"
+    }
   }
 }

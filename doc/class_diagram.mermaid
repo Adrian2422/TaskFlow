@@ -1,0 +1,35 @@
+﻿classDiagram
+direction BT
+class Boards {
+   nvarchar(max) Name
+   nvarchar(max) Description
+   datetime2 CreatedAt
+   datetime2 UpdatedAt
+   bit IsArchived
+   uniqueidentifier Id
+}
+class Columns {
+   nvarchar(max) Name
+   float Order
+   uniqueidentifier BoardId
+   datetime2 CreatedAt
+   datetime2 UpdatedAt
+   bit IsProtected
+   bit IsArchived
+   uniqueidentifier Id
+}
+class WorkItems {
+   nvarchar(max) Title
+   nvarchar(max) Description
+   uniqueidentifier ColumnId
+   datetime2 CreatedAt
+   float Order
+   datetime2 UpdatedAt
+   uniqueidentifier BoardId
+   bit IsArchived
+   uniqueidentifier Id
+}
+
+Columns  -->  Boards : BoardId
+WorkItems  -->  Boards : BoardId
+WorkItems  -->  Columns : ColumnId

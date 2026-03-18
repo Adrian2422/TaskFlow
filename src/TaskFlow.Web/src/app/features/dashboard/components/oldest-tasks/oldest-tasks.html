@@ -1,0 +1,50 @@
+<z-card class="w-full">
+  <div data-slot="card-content" class="flex flex-col gap-y-4">
+    <span>Oldest tasks</span>
+    <table z-table>
+      <thead>
+        @for (headerGroup of table.getHeaderGroups(); track headerGroup.id) {
+        <tr>
+          @for (header of headerGroup.headers; track header.id) {
+          <th>
+            @if (!header.isPlaceholder) {
+            <ng-container
+              *flexRender="header.column.columnDef.header;
+                    props: header.getContext();
+                    let headerContent"
+            >
+              {{ headerContent }}
+            </ng-container>
+            }
+          </th>
+          }
+        </tr>
+        }
+      </thead>
+      <tbody>
+        @for (row of table.getRowModel().rows; track row.id) {
+        <tr>
+          @for (cell of row.getVisibleCells(); track cell.id) { @switch
+          (cell.column.id){ @case ('actions') {
+          <td>
+            <button z-button zType="outline" class="cursor-pointer">
+              <i z-icon zType="arrow-up-right" class="size-4"></i>
+            </button>
+          </td>
+          } @default {
+          <td>
+            <ng-container
+              *flexRender="cell.column.columnDef.cell;
+                  props: cell.getContext();
+                  let cellContent"
+            >
+              {{ cellContent }}
+            </ng-container>
+          </td>
+          } } }
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</z-card>

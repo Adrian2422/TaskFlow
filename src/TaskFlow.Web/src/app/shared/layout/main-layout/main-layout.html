@@ -13,14 +13,17 @@
       >
         <z-sidebar-group>
           @if (!sidebarCollapsed()) {
-          <z-sidebar-group-label>Main</z-sidebar-group-label>
+          <z-sidebar-group-label
+            >{{ 'sidebar.navigation' | withPrefix:prefix() | translate
+            }}</z-sidebar-group-label
+          >
           } @for (item of mainMenuItems; track item.label) {
           <button
             type="button"
             z-button
             zType="ghost"
             [class]="sidebarCollapsed() ? 'justify-center' : 'justify-start'"
-            [zTooltip]="sidebarCollapsed() ? item.label : ''"
+            [zTooltip]="sidebarCollapsed() ? (item.label | withPrefix:prefix() | translate) : ''"
             zPosition="right"
           >
             <z-icon
@@ -28,7 +31,7 @@
               [class]="sidebarCollapsed() ? '' : 'mr-2'"
             />
             @if (!sidebarCollapsed()) {
-            <span>{{ item.label }}</span>
+            <span>{{ item.label | withPrefix:prefix() | translate }}</span>
             }
           </button>
           }
@@ -36,7 +39,10 @@
 
         <z-sidebar-group>
           @if (!sidebarCollapsed()) {
-          <z-sidebar-group-label>Workspace</z-sidebar-group-label>
+          <z-sidebar-group-label
+            >{{ 'sidebar.boards-and-tasks' | withPrefix:prefix() | translate
+            }}</z-sidebar-group-label
+          >
           } @for (item of workspaceMenuItems; track item.label) { @if
           (item.submenu) {
           <button
@@ -47,7 +53,7 @@
             [zMenuTriggerFor]="submenu"
             zPlacement="rightTop"
             [class]="sidebarCollapsed() ? 'justify-center' : 'justify-start'"
-            [zTooltip]="sidebarCollapsed() ? item.label : null"
+            [zTooltip]="sidebarCollapsed() ? (item.label | withPrefix:prefix() | translate) : null"
             zPosition="right"
           >
             <z-icon
@@ -55,7 +61,9 @@
               [class]="sidebarCollapsed() ? '' : 'mr-2'"
             />
             @if (!sidebarCollapsed()) {
-            <span class="flex-1 text-left">{{ item.label }}</span>
+            <span class="flex-1 text-left"
+              >{{ (item.label | withPrefix:prefix() | translate) }}</span
+            >
             <z-icon zType="chevron-right" />
             }
           </button>
@@ -63,7 +71,9 @@
           <ng-template #submenu>
             <div z-menu-content class="w-48">
               @for (subitem of item.submenu; track subitem.label) {
-              <button type="button" z-menu-item>{{ subitem.label }}</button>
+              <button type="button" z-menu-item>
+                {{ subitem.label | withPrefix:prefix() | translate }}
+              </button>
               }
             </div>
           </ng-template>
@@ -73,7 +83,7 @@
             z-button
             zType="ghost"
             [class]="sidebarCollapsed() ? 'justify-center' : 'justify-start'"
-            [zTooltip]="sidebarCollapsed() ? item.label : ''"
+            [zTooltip]="sidebarCollapsed() ? (item.label | withPrefix:prefix() | translate) : ''"
             zPosition="right"
           >
             <z-icon
@@ -81,7 +91,7 @@
               [class]="sidebarCollapsed() ? '' : 'mr-2'"
             />
             @if (!sidebarCollapsed()) {
-            <span>{{ item.label }}</span>
+            <span>{{ (item.label | withPrefix:prefix() | translate) }}</span>
             }
           </button>
           } }
@@ -114,19 +124,12 @@
 
           <ng-template #userMenu>
             <div z-menu-content class="w-48">
+              @for (item of userMenuItems; track item.label) {
               <button type="button" z-menu-item>
-                <z-icon zType="user" class="mr-2" />
-                Profile
+                <z-icon [zType]="item.icon" class="mr-2" />
+                {{ item.label | withPrefix:prefix() | translate }}
               </button>
-              <button type="button" z-menu-item>
-                <z-icon zType="settings" class="mr-2" />
-                Settings
-              </button>
-              <z-divider zSpacing="sm" />
-              <button type="button" z-menu-item>
-                <z-icon zType="log-out" class="mr-2" />
-                Logout
-              </button>
+              }
             </div>
           </ng-template>
         </div>
