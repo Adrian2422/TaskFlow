@@ -1,0 +1,27 @@
+<div class="flex items-center">
+  <button
+    type="button"
+    z-button
+    zType="ghost"
+    zSize="sm"
+    class="-ml-2 cursor-pointer"
+    (click)="toggled.emit()"
+  >
+    <z-icon zType="panel-left" />
+  </button>
+
+  <z-divider zOrientation="vertical" class="ml-2 h-4" />
+
+  <z-breadcrumb zWrap="wrap" zAlign="start">
+    @for (breadcrumb of breadcrumbStore.items(); track breadcrumb.label) { @let
+    routerLink = breadcrumb.routerLink; @if ($last) {
+    <z-breadcrumb-item [routerLink]="routerLink ?? []">
+      <span aria-current="page">{{ breadcrumb.label | translate }}</span>
+    </z-breadcrumb-item>
+    } @else {
+    <z-breadcrumb-item [routerLink]="routerLink ?? []"
+      >{{ breadcrumb.label | translate }}</z-breadcrumb-item
+    >
+    } }
+  </z-breadcrumb>
+</div>

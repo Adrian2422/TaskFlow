@@ -10,7 +10,7 @@ export class ZardDebounceEventManagerPlugin extends EventManagerPlugin {
     element: HTMLElement,
     eventName: string,
     handler: (event: Event) => void,
-    options?: ListenerOptions,
+    options?: ListenerOptions
     // eslint-disable-next-line
   ): Function {
     // Expected format: "event.debounce.delay" (e.g., "input.debounce.150")
@@ -24,7 +24,12 @@ export class ZardDebounceEventManagerPlugin extends EventManagerPlugin {
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => handler(event), resolvedDelay);
     };
-    const unsubscribe = this.manager.addEventListener(element, event, listener, options);
+    const unsubscribe = this.manager.addEventListener(
+      element,
+      event,
+      listener,
+      options
+    );
     return () => {
       clearTimeout(timeoutId);
       unsubscribe();

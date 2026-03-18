@@ -38,8 +38,10 @@ import { ZardIconComponent } from '@/shared/ui/components/icon/icon.component';
   host: {
     '[class]': 'classes()',
     '[attr.data-icon-only]': 'iconOnly() || null',
-    '[attr.data-disabled]': 'isNotInsideOfButtonOrLink() && zDisabled() || null',
-    '[attr.aria-disabled]': 'isNotInsideOfButtonOrLink() && zDisabled() || null',
+    '[attr.data-disabled]':
+      'isNotInsideOfButtonOrLink() && zDisabled() || null',
+    '[attr.aria-disabled]':
+      'isNotInsideOfButtonOrLink() && zDisabled() || null',
     '[attr.disabled]': 'isNotInsideOfButtonOrLink() && zDisabled() ? "" : null',
     '[attr.role]': 'isNotInsideOfButtonOrLink() ? "button" : null',
     '[attr.tabindex]': 'isNotInsideOfButtonOrLink() ? "0" : null',
@@ -64,7 +66,10 @@ export class ZardButtonComponent implements OnDestroy {
 
   constructor() {
     afterNextRender(() => {
-      if (typeof window === 'undefined' || typeof MutationObserver === 'undefined') {
+      if (
+        typeof window === 'undefined' ||
+        typeof MutationObserver === 'undefined'
+      ) {
         return;
       }
 
@@ -72,7 +77,7 @@ export class ZardButtonComponent implements OnDestroy {
         const el = this.elementRef.nativeElement;
         const hasIcon = el.querySelector('z-icon, [z-icon]') !== null;
         const children = Array.from<Node>(el.childNodes);
-        const hasText = children.some(node => {
+        const hasText = children.some((node) => {
           if (node.nodeType === 3) {
             return node.textContent?.trim() !== '';
           }
@@ -116,8 +121,8 @@ export class ZardButtonComponent implements OnDestroy {
         zLoading: this.zLoading(),
         zDisabled: this.zDisabled(),
       }),
-      this.class(),
-    ),
+      this.class()
+    )
   );
 
   protected readonly isNotInsideOfButtonOrLink = computed(() => {

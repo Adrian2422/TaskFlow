@@ -9,6 +9,7 @@ The frontend layer of the TaskFlow application.
 - **Tailwind CSS** - Styling (with SCSS where needed)
 - **Orval** - API model generation (planned)
 - **NgRx Signal Store** - State management (planned)
+- **ngx-translate** - translation service
 
 ## Project Structure (Target)
 

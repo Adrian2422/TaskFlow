@@ -4,9 +4,12 @@
     <ShouldRunBuildScript>false</ShouldRunBuildScript>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="src\app\features\" />
+    <Folder Include="src\app\features\dashboard\store\mappers\" />
+    <Folder Include="src\app\features\dashboard\store\models\" />
     <Folder Include="src\app\features\landing\components\" />
-    <Folder Include="src\app\layout\" />
+    <Folder Include="src\app\shared\components\" />
+    <Folder Include="src\app\shared\layout\" />
+    <Folder Include="src\app\shared\pipes\" />
     <Folder Include="src\app\shared\ui\" />
   </ItemGroup>
   <ItemGroup>

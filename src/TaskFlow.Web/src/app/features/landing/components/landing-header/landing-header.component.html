@@ -9,8 +9,14 @@
       <span class="text-lg font-bold text-white">{{ appName }}</span>
     </div>
     <div class="flex items-center gap-2.5">
-      <button z-button zSize="lg" zType="outline" class="cursor-pointer">
-        Zaloguj
+      <button
+        z-button
+        zSize="lg"
+        zType="outline"
+        class="cursor-pointer"
+        (click)="login()"
+      >
+        {{ 'log-in' | withPrefix: prefix() | translate }}
       </button>
     </div>
   </div>

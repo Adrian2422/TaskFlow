@@ -7,15 +7,18 @@
       <h1
         class="mb-6 text-4xl leading-[1.1] font-extrabold tracking-tight md:text-6xl lg:text-7xl"
       >
-        <span class="text-white">Łatwość zarządzania</span>
+        <span class="text-white">
+          {{ 'hero.title1' | withPrefix:prefix() | translate }}
+        </span>
         <br />
-        <span class="text-white">jak nigdy dotąd</span>
+        <span class="text-white">
+          {{ 'hero.title2' | withPrefix:prefix() | translate }}
+        </span>
       </h1>
       <p
         class="mx-auto mb-12 max-w-2xl text-lg leading-relaxed text-zinc-300 md:text-xl"
       >
-        TaskFlow to tablice i zadania w stylu Kanban do planowania i dowożenia
-        pracy.
+        {{ 'hero.subtitle' | withPrefix:prefix() | translate }}
       </p>
       <div class="flex flex-col justify-center gap-4 sm:flex-row">
         <button
@@ -23,10 +26,10 @@
           zSize="lg"
           class="animate-glow-pulse cursor-pointer bg-rose-600 text-white hover:bg-rose-500 focus:bg-rose-500"
         >
-          Załóż konto
+          {{ 'sign-up' | withPrefix:prefix() | translate }}
         </button>
         <button z-button zSize="lg" zType="outline" class="cursor-pointer">
-          Zobacz jak działa
+          {{ 'how-it-works' | withPrefix:prefix() | translate }}
         </button>
       </div>
     </div>
