@@ -1,0 +1,73 @@
+<main class="flex min-h-screen flex-col lg:flex-row">
+  <aside
+    class="bg-muted hidden flex-1 items-center justify-center p-8 lg:flex"
+  ></aside>
+  <div class="bg-background flex flex-1 items-center justify-center p-4 sm:p-8">
+    <div class="w-full max-w-md space-y-6 sm:space-y-8">
+      <div class="text-center">
+        <h1 class="text-2xl font-bold sm:text-3xl">Welcome to TaskFlow</h1>
+        <p class="text-muted-foreground mt-2 text-sm sm:text-base">
+          Register to continue
+        </p>
+      </div>
+
+      <z-card class="p-4 sm:p-6 lg:p-8">
+        <form (ngSubmit)="onSubmit()" class="space-y-4 sm:space-y-6">
+          <z-form-field>
+            <z-form-label [zRequired]="true">Email</z-form-label>
+            <z-form-control>
+              <input
+                z-input
+                type="email"
+                [formField]="registerForm.email"
+                placeholder="name@zard.com"
+                class="w-full"
+              />
+            </z-form-control>
+          </z-form-field>
+
+          <z-form-field>
+            <z-form-label [zRequired]="true">Password</z-form-label>
+            <z-form-control>
+              <input
+                z-input
+                type="password"
+                [formField]="registerForm.password"
+                placeholder="••••••••"
+                class="w-full"
+              />
+            </z-form-control>
+          </z-form-field>
+
+          <z-form-field>
+            <z-form-label [zRequired]="true">Repeat password</z-form-label>
+            <z-form-control>
+              <input
+                z-input
+                type="password"
+                [formField]="registerForm.repeatPassword"
+                placeholder="••••••••"
+                class="w-full"
+              />
+            </z-form-control>
+          </z-form-field>
+
+          <button
+            type="submit"
+            z-button
+            zFull
+            [zLoading]="isLoading()"
+            [disabled]="isLoading()"
+          >
+            Sign up
+          </button>
+        </form>
+      </z-card>
+
+      <p class="text-muted-foreground text-center text-sm">
+        Already have an account?
+        <a z-button zType="link" href="/login" class="px-0">Sign in</a>
+      </p>
+    </div>
+  </div>
+</main>

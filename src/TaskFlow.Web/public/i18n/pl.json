@@ -10,7 +10,7 @@
     "landing": {
       "components": {
         "landing-header": {
-          "log-in": "Zaloguj"
+          "sign-in": "Zaloguj"
         }
       },
       "hero": {

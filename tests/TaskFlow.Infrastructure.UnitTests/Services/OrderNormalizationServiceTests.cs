@@ -25,10 +25,12 @@ public class OrderNormalizationServiceTests
         var boardId = Guid.NewGuid();
         var columnId = Guid.NewGuid();
         
+        var userId = Guid.NewGuid();
+        
         var items = new List<WorkItem>
         {
-            WorkItem.Create("Task 1", null, boardId, columnId, 1.0),
-            WorkItem.Create("Task 2", null, boardId, columnId, 1.1)
+            WorkItem.Create("Task 1", null, boardId, columnId, 1.0, userId),
+            WorkItem.Create("Task 2", null, boardId, columnId, 1.1, userId)
         };
         
         context.WorkItems.AddRange(items);
@@ -57,10 +59,12 @@ public class OrderNormalizationServiceTests
         var boardId = Guid.NewGuid();
         var columnId = Guid.NewGuid();
         
+        var userId = Guid.NewGuid();
+        
         var items = new List<WorkItem>
         {
-            WorkItem.Create("Task 1", null, boardId, columnId, 1000.0),
-            WorkItem.Create("Task 2", null, boardId, columnId, 2000.0)
+            WorkItem.Create("Task 1", null, boardId, columnId, 1000.0, userId),
+            WorkItem.Create("Task 2", null, boardId, columnId, 2000.0, userId)
         };
         
         context.WorkItems.AddRange(items);

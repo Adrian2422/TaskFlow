@@ -23,6 +23,7 @@ builder.AddSqlServerDbContext<ApplicationDbContext>("taskflow-db");
 // Application Services
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices();
+builder.Services.AddApiAuthentication(builder.Configuration);
 builder.Services.AddFluentValidationAutoValidation();
 
 // Swagger/OpenAPI
@@ -58,6 +59,9 @@ if (app.Environment.IsDevelopment())
     });
 }
 app.UseWebCors();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseExceptionHandler();
 

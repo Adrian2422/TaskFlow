@@ -13,6 +13,7 @@ public static class ApplicationServiceCollectionExtensions
             cfg.RegisterServicesFromAssembly(typeof(AssemblyMarker).Assembly));
 
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
         services.AddValidatorsFromAssemblyContaining<AssemblyMarker>();

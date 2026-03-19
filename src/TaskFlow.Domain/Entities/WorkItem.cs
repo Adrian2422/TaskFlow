@@ -13,7 +13,13 @@ public class WorkItem : BaseEntity
 
     public double Order { get; set; }
 
-    public static WorkItem Create(string title, string? description, Guid boardId, Guid? columnId, double order)
+    public Guid CreatedById { get; set; }
+    public User CreatedBy { get; set; } = null!;
+
+    public Guid? AssignedToId { get; set; }
+    public User? AssignedTo { get; set; }
+
+    public static WorkItem Create(string title, string? description, Guid boardId, Guid? columnId, double order, Guid createdById, Guid? assignedToId = null)
     {
         return new WorkItem
         {
@@ -21,7 +27,9 @@ public class WorkItem : BaseEntity
             Description = description,
             BoardId = boardId,
             ColumnId = columnId,
-            Order = order
+            Order = order,
+            CreatedById = createdById,
+            AssignedToId = assignedToId
         };
     }
 

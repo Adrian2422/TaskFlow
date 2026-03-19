@@ -125,7 +125,12 @@
           <ng-template #userMenu>
             <div z-menu-content class="w-48">
               @for (item of userMenuItems; track item.label) {
-              <button type="button" z-menu-item>
+              <button
+                type="button"
+                class="cursor-pointer"
+                z-menu-item
+                (click)="item.command ? item.command() : null"
+              >
                 <z-icon [zType]="item.icon" class="mr-2" />
                 {{ item.label | withPrefix:prefix() | translate }}
               </button>
