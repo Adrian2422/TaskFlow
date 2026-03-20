@@ -5,6 +5,8 @@ using TaskFlow.Domain.Entities;
 using TaskFlow.Domain.Errors;
 using TaskFlow.Domain.Interfaces;
 
+using TaskFlow.Application.Interfaces;
+
 namespace TaskFlow.Application.UnitTests.Commands.WorkItems.CreateWorkItem;
 
 public class CreateWorkItemCommandHandlerTests
@@ -12,6 +14,7 @@ public class CreateWorkItemCommandHandlerTests
     private readonly Mock<IWorkItemRepository> _workItemRepoMock;
     private readonly Mock<IBoardRepository> _boardRepoMock;
     private readonly Mock<IBoardColumnRepository> _boardColumnRepoMock;
+    private readonly Mock<ICurrentUserService> _currentUserServiceMock;
     private readonly CreateWorkItemCommandHandler _handler;
 
     public CreateWorkItemCommandHandlerTests()
@@ -19,13 +22,16 @@ public class CreateWorkItemCommandHandlerTests
         _workItemRepoMock = new Mock<IWorkItemRepository>();
         _boardRepoMock = new Mock<IBoardRepository>();
         _boardColumnRepoMock = new Mock<IBoardColumnRepository>();
-        _handler = new CreateWorkItemCommandHandler(_workItemRepoMock.Object, _boardRepoMock.Object);
+        _currentUserServiceMock = new Mock<ICurrentUserService>();
+        _handler = new CreateWorkItemCommandHandler(_workItemRepoMock.Object, _boardRepoMock.Object, _currentUserServiceMock.Object);
     }
     
     [Fact]
     public async Task Handle_ShouldReturnSuccess_WhenDataIsValidAndBoardExists()
     {
-        var existingBoard = new Board(){ Name = "TaskFlow", Description = "Desc" };
+        var userId = Guid.NewGuid();
+        _currentUserServiceMock.Setup(x => x.UserId).Returns(userId);
+        var existingBoard = Board.Create("TaskFlow", "Desc", userId);
         var boardId = existingBoard.Id;
         
         _boardRepoMock.Setup(x => x.GetByIdAsync(boardId)).ReturnsAsync(existingBoard);
@@ -47,6 +53,8 @@ public class CreateWorkItemCommandHandlerTests
     [Fact]
     public async Task Handle_ShouldReturnFailure_WhenDataIsValidButBoardDoesNotExist()
     {
+        var userId = Guid.NewGuid();
+        _currentUserServiceMock.Setup(x => x.UserId).Returns(userId);
         var boardId = Guid.NewGuid();
 
         _boardRepoMock.Setup(x => x.GetByIdAsync(boardId)).ReturnsAsync((Board?)null);
@@ -68,10 +76,12 @@ public class CreateWorkItemCommandHandlerTests
     [Fact]
     public async Task Handle_ShouldReturnSuccess_WhenDataIsValidAndBoardExistsAndColumnIsSet()
     {
-        var existingBoard = new Board(){ Name = "TaskFlow", Description = "Desc" };
+        var userId = Guid.NewGuid();
+        _currentUserServiceMock.Setup(x => x.UserId).Returns(userId);
+        var existingBoard = Board.Create("TaskFlow", "Desc", userId);
         var boardId = existingBoard.Id;
         
-        var existingColumn = new BoardColumn(){ Name = "Task 1" };
+        var existingColumn = BoardColumn.Create("Task 1", 1, boardId);
         var columnId = existingColumn.Id;
         
         _boardRepoMock.Setup(x => x.GetByIdAsync(boardId)).ReturnsAsync(existingBoard);

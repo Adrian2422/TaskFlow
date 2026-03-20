@@ -49,7 +49,8 @@ public class BoardColumnRepositoryTests
         var column = BoardColumn.Create("Col 1", 1.0, boardId);
         context.Columns.Add(column);
         
-        var workItem = WorkItem.Create("Task 1", null, boardId, column.Id, 1.0);
+        var userId = Guid.NewGuid();
+        var workItem = WorkItem.Create("Task 1", null, boardId, column.Id, 1.0, userId);
         context.WorkItems.Add(workItem);
         
         await context.SaveChangesAsync();

@@ -22,7 +22,7 @@ export class LandingHeader implements IComponentTranslate {
   public readonly prefix = input('feature.landing.components.landing-header');
   public readonly appName = environment.appName;
 
-  public login(): void {
+  public signIn(): void {
     void this._router.navigateByUrl('/dashboard');
   }
 }

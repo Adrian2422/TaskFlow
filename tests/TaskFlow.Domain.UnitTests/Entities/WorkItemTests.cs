@@ -14,9 +14,10 @@ public class WorkItemTests
         var boardId = Guid.NewGuid();
         var columnId = Guid.NewGuid();
         var order = 1.0;
+        var userId = Guid.NewGuid();
 
         // Act
-        var workItem = WorkItem.Create(title, description, boardId, columnId, order);
+        var workItem = WorkItem.Create(title, description, boardId, columnId, order, userId);
 
         // Assert
         workItem.Title.ShouldBe(title);
@@ -24,6 +25,7 @@ public class WorkItemTests
         workItem.BoardId.ShouldBe(boardId);
         workItem.ColumnId.ShouldBe(columnId);
         workItem.Order.ShouldBe(order);
+        workItem.CreatedById.ShouldBe(userId);
         workItem.Id.ShouldNotBe(Guid.Empty);
         workItem.IsArchived.ShouldBeFalse();
     }
@@ -32,7 +34,8 @@ public class WorkItemTests
     public void Archive_ShouldSetIsArchivedToTrue()
     {
         // Arrange
-        var workItem = WorkItem.Create("Title", null, Guid.NewGuid(), null, 1);
+        var userId = Guid.NewGuid();
+        var workItem = WorkItem.Create("Title", null, Guid.NewGuid(), null, 1, userId);
 
         // Act
         workItem.Archive();
@@ -45,7 +48,8 @@ public class WorkItemTests
     public void Restore_ShouldSetIsArchivedToFalse()
     {
         // Arrange
-        var workItem = WorkItem.Create("Title", null, Guid.NewGuid(), null, 1);
+        var userId = Guid.NewGuid();
+        var workItem = WorkItem.Create("Title", null, Guid.NewGuid(), null, 1, userId);
         workItem.Archive();
 
         // Act

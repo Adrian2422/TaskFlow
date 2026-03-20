@@ -24,11 +24,12 @@ public class WorkItemRepositoryTests
         using var context = CreateDbContext();
         var boardId = Guid.NewGuid();
         var columnId = Guid.NewGuid();
+        var userId = Guid.NewGuid();
         
         context.WorkItems.AddRange(
-            WorkItem.Create("Task 1", null, boardId, columnId, 100.0),
-            WorkItem.Create("Task 2", null, boardId, columnId, 500.0),
-            WorkItem.Create("Task 3", null, boardId, columnId, 300.0)
+            WorkItem.Create("Task 1", null, boardId, columnId, 100.0, userId),
+            WorkItem.Create("Task 2", null, boardId, columnId, 500.0, userId),
+            WorkItem.Create("Task 3", null, boardId, columnId, 300.0, userId)
         );
         await context.SaveChangesAsync();
         
@@ -62,11 +63,12 @@ public class WorkItemRepositoryTests
         // Arrange
         using var context = CreateDbContext();
         var boardId = Guid.NewGuid();
+        var userId = Guid.NewGuid();
         
         context.WorkItems.AddRange(
-            WorkItem.Create("Task 1", null, boardId, null, 10.0),
-            WorkItem.Create("Task 2", null, boardId, null, 50.0),
-            WorkItem.Create("Task 3", null, boardId, Guid.NewGuid(), 100.0) // In some column
+            WorkItem.Create("Task 1", null, boardId, null, 10.0, userId),
+            WorkItem.Create("Task 2", null, boardId, null, 50.0, userId),
+            WorkItem.Create("Task 3", null, boardId, Guid.NewGuid(), 100.0, userId) // In some column
         );
         await context.SaveChangesAsync();
         

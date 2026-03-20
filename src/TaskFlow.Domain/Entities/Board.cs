@@ -10,12 +10,18 @@ public class Board : BaseEntity
 
     public ICollection<WorkItem> BacklogItems { get; set; } = new List<WorkItem>();
 
-    public static Board Create(string name, string? description)
+    public Guid CreatedById { get; set; }
+    public User CreatedBy { get; set; } = null!;
+
+    public ICollection<BoardMember> Members { get; set; } = new List<BoardMember>();
+
+    public static Board Create(string name, string? description, Guid createdById)
     {
         return new Board
         {
             Name = name,
-            Description = description
+            Description = description,
+            CreatedById = createdById
         };
     }
 

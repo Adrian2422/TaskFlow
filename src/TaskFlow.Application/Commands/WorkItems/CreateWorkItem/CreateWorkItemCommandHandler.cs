@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using TaskFlow.Application.DTOs;
 using TaskFlow.Application.Common;
+using TaskFlow.Application.Interfaces;
 using TaskFlow.Domain.Entities;
 using TaskFlow.Domain.Errors;
 using TaskFlow.Domain.Interfaces;
@@ -11,15 +12,24 @@ public class CreateWorkItemCommandHandler : IRequestHandler<CreateWorkItemComman
 {
     private readonly IWorkItemRepository _workItemRepository;
     private readonly IBoardRepository _boardRepository;
+    private readonly ICurrentUserService _currentUserService;
 
-    public CreateWorkItemCommandHandler(IWorkItemRepository workItemRepository, IBoardRepository boardRepository)
+    public CreateWorkItemCommandHandler(IWorkItemRepository workItemRepository, IBoardRepository boardRepository, ICurrentUserService currentUserService)
     {
         _workItemRepository = workItemRepository;
         _boardRepository = boardRepository;
+        _currentUserService = currentUserService;
     }
 
     public async Task<Result<WorkItemDto>> Handle(CreateWorkItemCommand request, CancellationToken ct)
     {
+        if (!_currentUserService.UserId.HasValue)
+        {
+            return Result.Failure<WorkItemDto>(new TaskFlow.Domain.Common.Error("Auth.Unauthorized", "User not authenticated"));
+        }
+
+        var userId = _currentUserService.UserId.Value;
+
         var board = await _boardRepository.GetByIdAsync(request.BoardId);
         if (board == null)
         {
@@ -38,7 +48,7 @@ public class CreateWorkItemCommandHandler : IRequestHandler<CreateWorkItemComman
             order = maxOrder.HasValue ? maxOrder.Value + 1000 : 0;
         }
 
-        var entity = WorkItem.Create(request.Title, request.Description, request.BoardId, request.ColumnId, order);
+        var entity = WorkItem.Create(request.Title, request.Description, request.BoardId, request.ColumnId, order, userId, request.AssignedToId);
 
         await _workItemRepository.CreateAsync(entity);
         await _workItemRepository.SaveChangesAsync();

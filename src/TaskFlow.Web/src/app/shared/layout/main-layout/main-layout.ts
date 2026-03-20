@@ -1,4 +1,4 @@
-import { Component, input, signal } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
 import { LayoutImports } from '@/shared/ui/components/layout';
 import { ZardAvatarComponent } from '@/shared/ui/components/avatar';
 import { ZardButtonComponent } from '@/shared/ui/components/button';
@@ -12,6 +12,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { WithPrefixPipe } from '@/shared/pipes/with-prefix-pipe';
 import { ZardTooltipImports } from '@/shared/ui/components/tooltip';
 import { IComponentTranslate } from '@/shared/interfaces/component-translate';
+import { AuthService } from '@/shared/services/auth.service';
 
 type UserRole = 'user' | 'admin';
 
@@ -19,6 +20,7 @@ interface MenuItem {
   icon: ZardIcon;
   label: string;
   submenu?: { label: string }[];
+  command?: () => void;
 }
 
 @Component({
@@ -39,6 +41,8 @@ interface MenuItem {
   styleUrl: './main-layout.scss',
 })
 export class MainLayout implements IComponentTranslate {
+  private readonly authService = inject(AuthService);
+
   public readonly sidebarCollapsed = signal(false);
 
   // Placeholder for future auth integration; for now the host can pass `userRole="admin"`
@@ -83,7 +87,11 @@ export class MainLayout implements IComponentTranslate {
     return [
       { icon: ZARD_ICONS.user, label: 'user-menu.profile' },
       { icon: ZARD_ICONS.settings, label: 'user-menu.settings' },
-      { icon: 'log-out', label: 'user-menu.log-out' },
+      {
+        icon: 'log-out',
+        label: 'user-menu.log-out',
+        command: () => this.authService.logout(),
+      },
     ];
   }
 

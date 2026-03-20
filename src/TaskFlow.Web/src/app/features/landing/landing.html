@@ -25,6 +25,7 @@
           z-button
           zSize="lg"
           class="animate-glow-pulse cursor-pointer bg-rose-600 text-white hover:bg-rose-500 focus:bg-rose-500"
+          (click)="goToRegistration()"
         >
           {{ 'sign-up' | withPrefix:prefix() | translate }}
         </button>
